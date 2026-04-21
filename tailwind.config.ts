@@ -13,7 +13,17 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+        serif: ['Instrument Serif', 'serif'],
+      },
       colors: {
+        terminal: {
+          green: "hsl(var(--terminal-green))",
+          amber: "hsl(var(--terminal-amber))",
+          cyan: "hsl(var(--terminal-cyan))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
