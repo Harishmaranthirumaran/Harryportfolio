@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Mail, Linkedin, MapPin, Cpu, Database, GitBranch, Terminal, Briefcase, GraduationCap, Award, Sparkles } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 const PROJECTS = [
   {
@@ -279,43 +280,33 @@ const Index = () => {
       {/* CONTACT */}
       <section id="contact" className="container py-20 md:py-32 border-t border-border/60">
         <SectionHeader index="06" title="contact" />
-        <div className="mt-12 max-w-3xl">
-          <h2 className="font-serif text-4xl md:text-6xl leading-tight mb-6">
-            Let's build something <span className="text-primary glow-text">measurable</span>.
-          </h2>
-          <p className="text-lg text-muted-foreground mb-10 max-w-2xl">
-            Open to Business Analyst, Regulatory Change, and AI-enhanced operations roles in Amsterdam &amp; remote across Europe.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <a href="mailto:harishmaran2001@gmail.com" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">email</div>
-                <div className="text-foreground">harishmaran2001@gmail.com</div>
-              </div>
-              <Mail className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-            <a href="https://linkedin.com/in/harishmaran" target="_blank" rel="noreferrer" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">linkedin</div>
-                <div className="text-foreground">/in/harishmaran</div>
-              </div>
-              <Linkedin className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-            <a href="tel:+31638414738" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">phone</div>
-                <div className="text-foreground">+31 638 414 7387</div>
-              </div>
-              <Sparkles className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-            <div className="flex items-center justify-between border border-border bg-card/40 p-5">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">location</div>
-                <div className="text-foreground">Amsterdam, NL</div>
-              </div>
-              <MapPin className="h-5 w-5 text-muted-foreground" />
+        <div className="mt-12 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          <div>
+            <h2 className="font-serif text-4xl md:text-6xl leading-tight mb-6">
+              Let's build something <span className="text-primary glow-text">measurable</span>.
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl">
+              Open to Business Analyst, Regulatory Change, and AI-enhanced operations roles in Amsterdam &amp; remote across Europe.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3 max-w-2xl">
+              <a href="mailto:harishmaran2001@gmail.com" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-4 transition-all">
+                <div>
+                  <div className="mono text-[10px] text-muted-foreground mb-1">email</div>
+                  <div className="text-foreground text-sm truncate">harishmaran2001@gmail.com</div>
+                </div>
+                <Mail className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
+              </a>
+              <a href="https://linkedin.com/in/harishmaran" target="_blank" rel="noreferrer" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-4 transition-all">
+                <div>
+                  <div className="mono text-[10px] text-muted-foreground mb-1">linkedin</div>
+                  <div className="text-foreground text-sm">/in/harishmaran</div>
+                </div>
+                <Linkedin className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
+              </a>
             </div>
           </div>
+
+          <ContactForm />
         </div>
       </section>
 
