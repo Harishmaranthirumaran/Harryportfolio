@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Mail, Linkedin, MapPin, Cpu, Database, GitBranch, Terminal, Briefcase, GraduationCap, Award, Sparkles } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 const PROJECTS = [
   {
@@ -306,46 +307,6 @@ const Index = () => {
           </div>
 
           <ContactForm />
-        </div>
-        <div className="hidden">
-          <div className="grid sm:grid-cols-2 gap-3">
-            <a href="mailto:harishmaran2001@gmail.com" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">email</div>
-                <div className="text-foreground">harishmaran2001@gmail.com</div>
-              </div>
-              <Mail className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <a href="mailto:harishmaran2001@gmail.com" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">email</div>
-                <div className="text-foreground">harishmaran2001@gmail.com</div>
-              </div>
-              <Mail className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-            <a href="https://linkedin.com/in/harishmaran" target="_blank" rel="noreferrer" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">linkedin</div>
-                <div className="text-foreground">/in/harishmaran</div>
-              </div>
-              <Linkedin className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-            <a href="tel:+31638414738" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-5 transition-all">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">phone</div>
-                <div className="text-foreground">+31 638 414 7387</div>
-              </div>
-              <Sparkles className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </a>
-            <div className="flex items-center justify-between border border-border bg-card/40 p-5">
-              <div>
-                <div className="mono text-xs text-muted-foreground mb-1">location</div>
-                <div className="text-foreground">Amsterdam, NL</div>
-              </div>
-              <MapPin className="h-5 w-5 text-muted-foreground" />
-            </div>
-          </div>
         </div>
       </section>
 
