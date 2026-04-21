@@ -370,6 +370,13 @@ const Index = () => {
                 </div>
                 <Linkedin className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
               </a>
+              <a href="/Harishmaran_Subbaiah_Thirumaran_CV.pdf" download className="group sm:col-span-2 flex items-center justify-between border border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 p-4 transition-all">
+                <div>
+                  <div className="mono text-[10px] text-muted-foreground mb-1">curriculum vitae</div>
+                  <div className="text-sm">Download full CV (PDF)</div>
+                </div>
+                <Download className="h-4 w-4 flex-shrink-0 ml-2" />
+              </a>
             </div>
           </div>
 
