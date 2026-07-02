@@ -77,85 +77,111 @@ const Typewriter = ({ text, delay = 0 }: { text: string; delay?: number }) => {
   );
 };
 
-// ENHANCED ORBITING SKILLS - Each icon rotates on its own path
-const OrbitingSkills = () => {
-  const skills = [
-    { name: "AWS", icon: "AWS", color: "#FF9900", size: "large", speed: 25 },
-    { name: "Docker", icon: "DK", color: "#2496ED", size: "large", speed: 30 },
-    { name: "Kubernetes", icon: "K8s", color: "#326CE5", size: "large", speed: 35 },
-    { name: "Terraform", icon: "TF", color: "#7B42BC", size: "medium", speed: 20 },
-    { name: "Python", icon: "Py", color: "#3776AB", size: "medium", speed: 28 },
-    { name: "GitHub Actions", icon: "GA", color: "#2088FF", size: "medium", speed: 32 },
-    { name: "TypeScript", icon: "TS", color: "#3178C6", size: "small", speed: 22 },
-    { name: "Linux", icon: "LX", color: "#FCC624", size: "small", speed: 26 },
+// SOLAR SYSTEM SKILLS - DevOps tools orbiting the cloud core like planets
+type Planet = { name: string; label: string; color: string; ring: number; angle: number };
+
+const SolarSystem = () => {
+  // Three concentric orbits. ring => radius. angle => starting position (deg).
+  const planets: Planet[] = [
+    // Inner orbit — core platforms
+    { name: "AWS", label: "AWS", color: "#FF9900", ring: 0, angle: 0 },
+    { name: "Docker", label: "DK", color: "#2496ED", ring: 0, angle: 120 },
+    { name: "Kubernetes", label: "K8s", color: "#326CE5", ring: 0, angle: 240 },
+    // Middle orbit — infra + observability
+    { name: "Terraform", label: "TF", color: "#7B42BC", ring: 1, angle: 45 },
+    { name: "Linux", label: "LX", color: "#FCC624", ring: 1, angle: 135 },
+    { name: "Prometheus", label: "PM", color: "#E6522C", ring: 1, angle: 225 },
+    { name: "Grafana", label: "GF", color: "#F46800", ring: 1, angle: 315 },
+    // Outer orbit — automation + delivery
+    { name: "Python", label: "Py", color: "#3776AB", ring: 2, angle: 20 },
+    { name: "Ansible", label: "AN", color: "#EE0000", ring: 2, angle: 92 },
+    { name: "Jenkins", label: "JK", color: "#D24939", ring: 2, angle: 164 },
+    { name: "GitHub Actions", label: "GA", color: "#2088FF", ring: 2, angle: 236 },
+    { name: "Git", label: "Git", color: "#F05032", ring: 2, angle: 308 },
   ];
 
+  const ringRadius = [95, 155, 215];
+  const ringDuration = [32, 46, 60]; // slower as you go out, like real orbits
+
   return (
-    <div className="relative w-[400px] h-[400px] mx-auto">
-      {/* Central glow effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-purple-600/30 rounded-full blur-[60px] animate-pulse" />
-      
-      {/* Central logo */}
+    <div className="relative w-[480px] h-[480px] max-w-full mx-auto scale-[0.6] sm:scale-[0.8] md:scale-100 origin-center">
+      {/* Ambient core glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-purple-600/30 rounded-full blur-[70px] animate-pulse" />
+
+      {/* Orbit rings (visual guides) */}
+      {ringRadius.map((r, i) => (
+        <div
+          key={`ring-${i}`}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed"
+          style={{
+            width: r * 2,
+            height: r * 2,
+            borderColor: "rgba(168,133,255,0.12)",
+          }}
+        />
+      ))}
+
+      {/* The Sun / core */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] border-2 border-white/20">
-          <Cloud className="w-10 h-10" />
+        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 via-fuchsia-600 to-pink-600 flex flex-col items-center justify-center shadow-[0_0_60px_rgba(168,85,247,0.6)] border border-white/20">
+          <Cloud className="w-9 h-9 text-white" />
+          <span className="text-[10px] font-semibold text-white/90 mt-0.5 tracking-wide">DevOps</span>
         </div>
       </div>
-      
-      {/* Orbit paths (visual only) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full border border-purple-500/10" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-purple-500/5" />
-      
-      {/* Skill icons - each on its own independent orbit */}
-      {skills.map((skill, index) => {
-        const isInner = index < 4;
-        const radius = isInner ? 140 : 180;
-        const startAngle = (index * 90) + (isInner ? 0 : 45);
-        const duration = skill.speed;
-        const delay = index * -3;
-        
+
+      {/* Planets */}
+      {planets.map((p, i) => {
+        const radius = ringRadius[p.ring];
+        const duration = ringDuration[p.ring];
         return (
           <div
-            key={skill.name}
-            className="absolute top-1/2 left-1/2"
-            style={{
-              animation: `orbit-${index} ${duration}s linear infinite`,
-              animationDelay: `${delay}s`,
-            }}
+            key={p.name}
+            className="absolute top-1/2 left-1/2 w-0 h-0"
+            style={{ animation: `sys-orbit-${i} ${duration}s linear infinite` }}
           >
             <div
-              className={`
-                flex items-center justify-center rounded-xl font-bold
-                transition-all duration-300 hover:scale-125 cursor-pointer
-                shadow-lg border border-white/10 backdrop-blur-sm
-                ${skill.size === 'large' ? 'w-14 h-14 text-xs' : 
-                  skill.size === 'medium' ? 'w-12 h-12 text-[10px]' : 'w-10 h-10 text-[9px]'}
-              `}
-              style={{
-                background: 'rgba(30, 30, 50, 0.8)',
-                color: skill.color,
-                transform: `translate(-50%, -50%) translateX(${radius}px)`,
-                boxShadow: `0 0 20px ${skill.color}40`,
-              }}
+              className="group absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ left: radius, top: 0, animation: `sys-spin-${i} ${duration}s linear infinite` }}
             >
-              {skill.icon}
-              {/* Tooltip */}
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] text-white/70">
-                {skill.name}
+              <div
+                className="flex items-center justify-center rounded-full font-bold text-[11px] w-12 h-12
+                  cursor-pointer transition-transform duration-300 hover:scale-125 border border-white/15 backdrop-blur-sm"
+                style={{
+                  background: "rgba(18,18,34,0.9)",
+                  color: p.color,
+                  boxShadow: `0 0 18px ${p.color}55`,
+                }}
+              >
+                {p.label}
+                <span
+                  className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-1.5 whitespace-nowrap
+                    rounded-md bg-slate-900/95 px-2 py-1 text-[10px] font-medium text-white/90
+                    opacity-0 group-hover:opacity-100 transition-opacity border border-slate-700/60"
+                >
+                  {p.name}
+                </span>
               </div>
             </div>
           </div>
         );
       })}
-      
-      {/* CSS keyframes for each orbit */}
+
+      {/* Per-planet keyframes: orbit rotates the arm, spin counter-rotates the planet to stay upright */}
       <style>{`
-        ${skills.map((_, index) => `
-          @keyframes orbit-${index} {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+        ${planets
+          .map(
+            (p, i) => `
+          @keyframes sys-orbit-${i} {
+            from { transform: rotate(${p.angle}deg); }
+            to   { transform: rotate(${p.angle + 360}deg); }
           }
-        `).join('')}
+          @keyframes sys-spin-${i} {
+            from { transform: translate(-50%, -50%) rotate(${-p.angle}deg); }
+            to   { transform: translate(-50%, -50%) rotate(${-p.angle - 360}deg); }
+          }
+        `
+          )
+          .join("")}
       `}</style>
     </div>
   );
@@ -370,7 +396,7 @@ const Index = () => {
             H.
           </a>
           <div className="hidden md:flex gap-8 text-sm font-medium">
-            {['Home', 'About', 'Experience', 'Projects', 'Lab'].map((item) => (
+            {['Home', 'About', 'Experience', 'Projects', 'Contact'].map((item) => (
               <a 
                 key={item} 
                 href={`#${item.toLowerCase()}`}
@@ -450,10 +476,10 @@ const Index = () => {
       {/* Stats Section */}
       <section className="relative z-10 py-20 px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          <StatCard number={5} suffix="+" label="Years Experience" />
+          <StatCard number={4} suffix="+" label="Years Experience" />
           <StatCard number={99} suffix=".9%" label="Uptime Maintained" />
           <StatCard number={40} suffix="%" label="Deploy Time Reduced" />
-          <StatCard number={3} suffix="+" label="Cloud Platforms" />
+          <StatCard number={30} suffix="+" label="IaC Projects Shipped" />
         </div>
       </section>
 
@@ -467,13 +493,14 @@ const Index = () => {
             I'm a <span className="text-purple-400"><Typewriter text="DevOps Engineer" delay={500} /></span>
           </h2>
           <p className="text-slate-400 text-lg mb-4">
-            Currently, I'm a Business Analyst at{" "}
+            Currently a Business Analyst at{" "}
             <a href="https://www.gov.uk/government/organisations/department-for-work-pensions" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">DWP</a>
-            {" "}, transitioning into DevOps.
+            {" "}— where I bridge delivery teams and cloud engineering — with a hands-on focus on DevOps and cloud infrastructure.
           </p>
           <p className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto">
-            A self-taught cloud infrastructure enthusiast, functioning in the industry for 5+ years now. 
-            I build meaningful and reliable systems that create an equilibrium between developer velocity 
+            Over 4+ years across service delivery and cloud engineering, I've built Infrastructure as Code with
+            Terraform, containerised workloads on AWS with Docker and Kubernetes, and wired up CI/CD and
+            observability with Prometheus and Grafana. I care about the equilibrium between developer velocity
             and operational stability.
           </p>
         </div>
@@ -491,37 +518,37 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 gap-6">
             <ExperienceCard
-              title="DevOps Engineer"
-              company="DWP - Department for Work and Pensions"
+              title="Business Analyst — DevOps & Cloud"
+              company="DWP — Department for Work and Pensions"
               period="Aug 2024 - Present"
-              description="Leading cloud migration initiatives and implementing Infrastructure as Code with Terraform and AWS. Driving automation of CI/CD pipelines for government digital services."
+              description="Bridge delivery teams and cloud engineering on government digital services. Translate operational requirements into Infrastructure as Code with Terraform and AWS, and champion CI/CD automation to shorten release cycles."
               icon={Cloud}
               color="bg-gradient-to-br from-blue-500 to-indigo-600"
               delay={0}
             />
             <ExperienceCard
-              title="Cloud Infrastructure Engineer"
+              title="Cloud & DevOps Engineer"
               company="The Contact Company"
               period="Jan 2024 - Aug 2024"
-              description="Built CI/CD pipelines and automated deployment processes, reducing release time by 40%. Implemented container orchestration with Kubernetes and Docker."
+              description="Designed CI/CD pipelines with GitHub Actions and automated deployments that cut release time by 40%. Containerised services with Docker and orchestrated them on Kubernetes for repeatable, self-healing rollouts."
               icon={Layers}
               color="bg-gradient-to-br from-purple-500 to-pink-600"
               delay={100}
             />
             <ExperienceCard
-              title="Systems Administrator"
+              title="Systems & Infrastructure Engineer"
               company="Cookooc"
-              period="Jan 2020 - Dec 2023"
-              description="Managed cloud infrastructure for digital platform, ensuring 99.9% uptime for 1000+ monthly transactions. Automated server deployment and monitoring."
+              period="Jan 2021 - Dec 2023"
+              description="Ran cloud infrastructure for a live digital platform at 99.9% uptime. Scripted server provisioning and monitoring in Python and Bash, and introduced Prometheus and Grafana dashboards for proactive alerting."
               icon={Server}
               color="bg-gradient-to-br from-emerald-500 to-teal-600"
               delay={200}
             />
             <ExperienceCard
-              title="Graduate Student"
+              title="MSc International Business"
               company="University of Liverpool"
               period="2023 - 2024"
-              description="MSc International Business with focus on data analytics and digital transformation. Achieved 2:1 Honours with specialization in cloud strategy."
+              description="Postgraduate study with a focus on data analytics and digital transformation, alongside self-directed AWS and Kubernetes engineering that seeded the cloud projects below."
               icon={GraduationCap}
               color="bg-gradient-to-br from-amber-500 to-orange-600"
               delay={300}
@@ -537,13 +564,38 @@ const Index = () => {
             Technical Arsenal
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Skills & Technologies</h2>
-          <p className="text-slate-400 mb-16 max-w-2xl mx-auto">
-            I'm currently looking to join a cross-functional team that values improving developer experience 
-            through reliable infrastructure and accessible automation.
+          <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
+            My DevOps toolchain orbits a single goal — shipping reliable, observable infrastructure.
+            The core platforms sit at the centre, with automation and monitoring tooling circling around.
           </p>
-          
-          <div className="flex justify-center py-12">
-            <OrbitingSkills />
+
+          <div className="flex justify-center items-center min-h-[320px] sm:min-h-[420px] md:min-h-[520px] py-4">
+            <SolarSystem />
+          </div>
+
+          {/* Grouped skill matrix for scanability */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 text-left">
+            {[
+              { group: "Cloud & Platforms", items: ["AWS", "EKS / ECS", "Fargate", "App Runner"] },
+              { group: "Containers & Orchestration", items: ["Docker", "Kubernetes", "Helm", "Istio"] },
+              { group: "IaC & Automation", items: ["Terraform", "Ansible", "GitHub Actions", "Jenkins"] },
+              { group: "Observability & OS", items: ["Prometheus", "Grafana", "OpenTelemetry", "Linux"] },
+            ].map((cat) => (
+              <div
+                key={cat.group}
+                className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 hover:border-purple-500/30 transition-colors"
+              >
+                <h4 className="text-sm font-semibold text-purple-400 mb-3">{cat.group}</h4>
+                <ul className="space-y-1.5">
+                  {cat.items.map((s) => (
+                    <li key={s} className="text-slate-400 text-sm flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-purple-500/60" />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -559,27 +611,40 @@ const Index = () => {
           </div>
           
           <div className="space-y-32">
-            {/* Retail Store Project */}
+            {/* Project 1 — Retail Store container platform */}
             <ProjectCard
-              title="Retail Store Sample Application"
-              subtitle="AWS Cloud Infrastructure"
-              description="Implemented complete cloud infrastructure for AWS Containers Retail Sample using Terraform. Constructed VPC with public/private subnets, deployed ECS cluster with Fargate compute, set up RDS for database, DynamoDB tables, ElastiCache, and configured ECS Service Connect for inter-service communication. Enabled OpenTelemetry integration for observability and Container Insights for monitoring."
+              title="Cloud-Native Retail Store Platform"
+              subtitle="Containers on AWS · ECS & EKS"
+              description="A microservices retail store (UI, catalog, cart, orders, checkout in Java, Go and Node) deployed on AWS with Terraform. I provisioned the VPC, ran the services on ECS Fargate and Amazon EKS, and backed them with RDS, DynamoDB and Redis. Every service is wired for Prometheus metrics and OpenTelemetry tracing, with Istio handling service mesh traffic on Kubernetes."
               image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80"
-              tags={["Terraform", "ECS", "Fargate", "VPC", "Service Connect", "OpenTelemetry", "RDS", "DynamoDB"]}
+              tags={["Terraform", "Amazon EKS", "ECS Fargate", "Istio", "Prometheus", "OpenTelemetry", "RDS", "DynamoDB"]}
               github="https://github.com/Harishmaranthirumaran/retail-store-sample-app"
               align="left"
               delay={0}
             />
-            
-            {/* Kubernetes EKS Project */}
+
+            {/* Project 2 — AWS Project Pack / IaC blueprint library */}
             <ProjectCard
-              title="Kubernetes on EKS"
-              subtitle="Cloud Native Orchestration"
-              description="Extended retail sample application with EKS deployment capabilities. Configured managed node groups across multiple availability zones, integrated OpenTelemetry with AWS Distro for observability, and enabled Istio service mesh. Automated Helm chart deployments and implemented GitOps workflows for infrastructure as code."
+              title="AWS Infrastructure Blueprint Library"
+              subtitle="Terraform IaC · 30+ Reusable Projects"
+              description="A curated pack of production-shaped Terraform blueprints covering the full cloud lifecycle: static hosting and serverless pipelines, multi-account landing zones, EKS GitOps platforms, observability stacks, security guardrails with SCPs and GuardDuty, disaster-recovery drills and FinOps cost intelligence. Each blueprint ships with runbooks, architecture notes and remote-state conventions so it can be deployed independently."
               image="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=1200&q=80"
-              tags={["EKS", "Kubernetes", "Helm", "Istio", "GitOps", "Terraform", "AWS"]}
-              github="https://github.com/Harishmaranthirumaran/retail-store-sample-app/tree/main/terraform/eks"
+              tags={["Terraform", "AWS Organizations", "GitOps", "Argo CD", "GuardDuty", "AWS Backup", "FinOps", "Ansible"]}
+              github="https://github.com/Harishmaranthirumaran/Cloud-project1"
               align="right"
+              delay={100}
+            />
+
+            {/* Project 3 — Live F1 telemetry dashboard */}
+            <ProjectCard
+              title="Live Formula 1 Telemetry Dashboard"
+              subtitle="Real-Time Data Pipeline · React & InfluxDB"
+              description="A self-built live F1 dashboard that streams native telemetry from the F1 SignalR broadcast feed, re-sorting every competitive metric across the grid every 5 seconds. A Dockerised fastf1 ingestion service writes into InfluxDB, which a Vite-proxied React front end queries with Flux, plus a browser-native race replay powered by OpenF1 session data. Deployed live on Vercel."
+              image="https://images.unsplash.com/photo-1552650272-b58f2f4a1c62?w=1200&q=80"
+              tags={["React", "TypeScript", "InfluxDB", "Docker", "Python (fastf1)", "OpenF1", "Vercel"]}
+              github="https://github.com/HARISHMARAN/Harry-s-F1-data"
+              live="https://harry-s-f1-data.vercel.app"
+              align="left"
               delay={200}
             />
           </div>
