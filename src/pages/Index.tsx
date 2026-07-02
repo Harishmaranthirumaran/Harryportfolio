@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, type ComponentType } from "react";
+import { useEffect, useState, useRef, type ComponentType, type MouseEvent as ReactMouseEvent } from "react";
 import { 
   Mail, 
   Linkedin, 
@@ -254,7 +254,27 @@ const ProjectCard = ({
   delay?: number;
 }) => {
   const { ref, isVisible } = useScrollReveal();
-  
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, gx: 50, gy: 50 });
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    // max ~7deg tilt, eased
+    setTilt({
+      rx: (0.5 - py) * 14,
+      ry: (px - 0.5) * 14,
+      gx: px * 100,
+      gy: py * 100,
+    });
+  };
+
+  const resetTilt = () => setTilt({ rx: 0, ry: 0, gx: 50, gy: 50 });
+
   return (
     <div 
       ref={ref}
@@ -276,7 +296,8 @@ const ProjectCard = ({
             <span 
               key={tag} 
               className="px-3 py-1 bg-slate-800/80 text-slate-300 text-xs rounded-full 
-                border border-slate-700 hover:border-purple-500/50 transition-colors"
+                border border-slate-700 hover:border-purple-500/50 hover:text-white 
+                hover:-translate-y-0.5 transition-all duration-300"
             >
               {tag}
             </span>
@@ -284,28 +305,69 @@ const ProjectCard = ({
         </div>
         <div className="flex gap-4">
           {github && (
-            <a href={github} className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group">
+            <a href={github} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group">
               <Github className="w-5 h-5" />
               <span className="text-sm group-hover:underline">Source</span>
             </a>
           )}
           {live && (
-            <a href={live} className="text-slate-400 hover:text-purple-400 transition-colors flex items-center gap-2 group">
+            <a href={live} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-purple-400 transition-colors flex items-center gap-2 group">
               <ExternalLink className="w-5 h-5" />
               <span className="text-sm group-hover:underline">Live Demo</span>
             </a>
           )}
         </div>
       </div>
-      <div className={`${align === "right" ? "lg:order-1" : ""}`}>
-        <div className="relative group rounded-xl overflow-hidden border border-slate-700/50 
-          hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_60px_rgba(139,92,246,0.2)]">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent z-10" />
+      <div className={`${align === "right" ? "lg:order-1" : ""}`} style={{ perspective: "1200px" }}>
+        <div
+          ref={cardRef}
+          onMouseMove={handleMove}
+          onMouseLeave={resetTilt}
+          className="relative group rounded-2xl overflow-hidden border border-slate-700/50 
+            transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform
+            hover:border-purple-500/40 hover:shadow-[0_20px_80px_-20px_rgba(139,92,246,0.45)]"
+          style={{
+            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.rx || tilt.ry ? 1.02 : 1})`,
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {/* skeleton shimmer while image loads */}
+          {!imgLoaded && (
+            <div className="absolute inset-0 z-20 bg-slate-800 overflow-hidden">
+              <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            </div>
+          )}
+
+          {/* gradient scrim */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/10 to-transparent z-10" />
+
+          {/* cursor-follow spotlight */}
+          <div
+            className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{
+              background: `radial-gradient(400px circle at ${tilt.gx}% ${tilt.gy}%, rgba(139,92,246,0.25), transparent 60%)`,
+            }}
+          />
+
           <img 
             src={image} 
             alt={title}
-            className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
+            onLoad={() => setImgLoaded(true)}
+            className={`w-full aspect-video object-cover transition-all duration-700 ease-out
+              group-hover:scale-110 ${imgLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-md'}`}
           />
+
+          {/* hover CTA pill */}
+          {(live || github) && (
+            <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2 rounded-full 
+              bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 text-sm text-white
+              translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 
+              transition-all duration-500">
+              <ExternalLink className="w-4 h-4" />
+              {live ? "Open live demo" : "View source"}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -411,123 +473,67 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative z-10 min-h-screen flex flex-col justify-center px-6 pt-24 pb-16">
-        <div className="max-w-6xl mx-auto w-full">
-          {/* Top row: avatar with glow + arrow + headline */}
-          <div className="grid lg:grid-cols-[auto_1fr] gap-8 lg:gap-14 items-center">
-            {/* Left — avatar with radial glow + hand-drawn arrow */}
-            <div
+      <section id="home" className="relative z-10 min-h-screen flex items-center px-6 pt-20">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left - Profile Card */}
+            <div 
               ref={heroRef}
-              className={`relative mx-auto lg:mx-0 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+              className={`
+                relative bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 
+                border border-slate-700/50 shadow-[0_0_60px_rgba(139,92,246,0.1)]
+                overflow-hidden
+                ${heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
+                transition-all duration-1000
+              `}
             >
-              {/* "Hello! I Am" label */}
-              <div className="absolute -top-14 left-1/2 -translate-x-1/2 lg:left-auto lg:-right-4 lg:translate-x-0 whitespace-nowrap text-lg md:text-xl font-round">
-                <span className="text-slate-200">Hello! I Am </span>
-                <span className="text-purple-400 font-semibold">Harishmaran</span>
-              </div>
-
-              {/* hand-drawn arrow pointing to avatar */}
-              <svg
-                className="absolute -top-8 left-1 w-16 h-16 text-slate-300/80 hidden sm:block"
-                viewBox="0 0 100 100"
-                fill="none"
-              >
-                <path
-                  d="M85 8 C 55 8, 30 22, 22 60"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M22 60 L 12 44 M22 60 L 40 54"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-
-              {/* radial glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-purple-600/40 blur-[80px]" />
-
-              {/* avatar core */}
-              <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-white/10 flex items-center justify-center shadow-[0_0_60px_rgba(139,92,246,0.3)]">
-                <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-purple-500 via-fuchsia-600 to-pink-600 flex flex-col items-center justify-center shadow-2xl">
-                  <Terminal className="w-14 h-14 text-white" />
-                  <span className="font-hand text-2xl text-white mt-1 leading-none">Harry</span>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+              <div className="relative">
+                <div className="text-purple-500 text-sm font-medium mb-2 uppercase tracking-widest">Hello! I Am</div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Harishmaran</h1>
+                <div className="relative w-24 h-24 mb-6">
+                  {/* radial glow behind the memoji */}
+                  <div className="absolute inset-0 -m-4 rounded-full bg-purple-500/40 blur-2xl animate-pulse" />
+                  <div className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-2xl animate-avatar-float">
+                    <span className="text-5xl select-none" role="img" aria-label="Developer coding on a MacBook">👨‍💻</span>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  {[
+                    { icon: Linkedin, href: "https://linkedin.com/in/harishmaran", label: "LinkedIn" },
+                    { icon: Github, href: "https://github.com/Harishmaranthirumaran", label: "GitHub" },
+                    { icon: Mail, href: "mailto:harishmaran2001@gmail.com", label: "Email" }
+                  ].map(({ icon: Icon, href, label }) => (
+                    <a 
+                      key={label}
+                      href={href}
+                      className="w-12 h-12 rounded-xl bg-slate-800/50 border border-slate-700/50 
+                        flex items-center justify-center text-slate-400 
+                        hover:text-white hover:bg-purple-500/20 hover:border-purple-500/50 
+                        transition-all duration-300 group"
+                      aria-label={label}
+                    >
+                      <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
-
-            {/* Right — "A DevOps Engineer who" + big handwritten headline */}
-            <div className={`text-center lg:text-left transition-all duration-1000 delay-200 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <p className="text-slate-300 text-lg md:text-xl mb-2 underline decoration-slate-600 underline-offset-8 font-round">
-                A DevOps Engineer who
-              </p>
-              <h1 className="font-hand text-white leading-[0.95] text-6xl md:text-8xl">
-                Automates the
-                <br />
-                boring, ships the{" "}
-                <span className="relative inline-block text-purple-400">
-                  reliable
-                  {/* hand-drawn ellipse around the word */}
-                  <svg
-                    className="absolute -inset-x-4 -inset-y-2 w-[calc(100%+2rem)] h-[calc(100%+1rem)] text-purple-400/80 pointer-events-none"
-                    viewBox="0 0 240 90"
-                    fill="none"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M120 8 C 200 8, 232 28, 228 45 C 224 70, 150 82, 90 80 C 30 78, 8 60, 14 40 C 20 20, 70 10, 120 8 Z"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+            
+            {/* Right - Hero Text */}
+            <div className={`text-center lg:text-left transition-all duration-1000 delay-300 ${heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+              <p className="text-slate-400 text-lg mb-4">A DevOps Engineer who</p>
+              <h2 className="text-5xl md:text-7xl font-bold mb-2">
+                <span className="text-white">Automates</span>
+              </h2>
+              <h2 className="text-5xl md:text-7xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+                  everything...
                 </span>
-                <span className="text-white">...</span>
-              </h1>
-              <p className="text-slate-400 text-sm md:text-base mt-4 font-round tracking-wide">
-                Because if the infrastructure is not solid, what else matters?
+              </h2>
+              <p className="text-slate-400 text-lg max-w-lg mx-auto lg:mx-0">
+                Currently building scalable infrastructure and CI/CD pipelines that empower teams to ship faster and more reliably.
               </p>
-            </div>
-          </div>
-
-          {/* Bottom — big typewriter statement */}
-          <div className={`mt-16 lg:mt-24 text-center transition-all duration-1000 delay-500 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-            <h2 className="font-hand text-white text-5xl md:text-7xl lg:text-8xl leading-none">
-              <Typewriter text="I'm a DevOps Engineer." delay={800} />
-            </h2>
-            <p className="font-round text-white text-lg md:text-2xl mt-5 flex flex-wrap items-center justify-center gap-2">
-              Currently, I'm a Business Analyst at
-              <a
-                href="https://www.gov.uk/government/organisations/department-for-work-pensions"
-                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors font-semibold"
-              >
-                <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-500 text-white text-xs font-bold">D</span>
-                DWP
-              </a>
-            </p>
-
-            {/* socials */}
-            <div className="flex justify-center gap-3 mt-8">
-              {[
-                { icon: Linkedin, href: "https://linkedin.com/in/harishmaran", label: "LinkedIn" },
-                { icon: Github, href: "https://github.com/Harishmaranthirumaran", label: "GitHub" },
-                { icon: Mail, href: "mailto:harishmaran2001@gmail.com", label: "Email" }
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="w-12 h-12 rounded-xl bg-slate-800/50 border border-slate-700/50
-                    flex items-center justify-center text-slate-400
-                    hover:text-white hover:bg-purple-500/20 hover:border-purple-500/50
-                    transition-all duration-300 group"
-                  aria-label={label}
-                >
-                  <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </a>
-              ))}
             </div>
           </div>
         </div>
@@ -700,7 +706,7 @@ const Index = () => {
               title="Live Formula 1 Telemetry Dashboard"
               subtitle="Real-Time Data Pipeline · React & InfluxDB"
               description="A self-built live F1 dashboard that streams native telemetry from the F1 SignalR broadcast feed, re-sorting every competitive metric across the grid every 5 seconds. A Dockerised fastf1 ingestion service writes into InfluxDB, which a Vite-proxied React front end queries with Flux, plus a browser-native race replay powered by OpenF1 session data. Deployed live on Vercel."
-              image="https://images.unsplash.com/photo-1552650272-b58f2f4a1c62?w=1200&q=80"
+              image="https://images.unsplash.com/photo-1541447271487-09612b3f49f7?w=1200&q=80&auto=format&fit=crop"
               tags={["React", "TypeScript", "InfluxDB", "Docker", "Python (fastf1)", "OpenF1", "Vercel"]}
               github="https://github.com/HARISHMARAN/Harry-s-F1-data"
               live="https://harry-s-f1-data.vercel.app"
