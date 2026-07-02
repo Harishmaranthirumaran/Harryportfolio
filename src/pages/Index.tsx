@@ -1,418 +1,648 @@
-import { useEffect, useState } from "react";
-import { ArrowUpRight, Mail, Linkedin, MapPin, Cpu, Database, GitBranch, Terminal, Briefcase, GraduationCap, Award, Download } from "lucide-react";
-import ContactForm from "@/components/ContactForm";
+import { useEffect, useState, useRef, type ComponentType } from "react";
+import { 
+  Mail, 
+  Linkedin, 
+  Github, 
+  ExternalLink,
+  ChevronRight,
+  Briefcase,
+  Cloud,
+  Terminal,
+  Database,
+  Server,
+  Layers,
+  Container,
+  Code2,
+  Award,
+  GraduationCap,
+  MapPin,
+  Cpu,
+  GitBranch,
+  Workflow,
+  Boxes
+} from "lucide-react";
 
-const PROJECTS = [
-  {
-    id: "01",
-    name: "JARVIS",
-    tagline: "Voice-first AI assistant for macOS",
-    description:
-      "A British-butler AI that runs locally on macOS. Connects to Apple Calendar, Mail, Notes; spawns Claude Code sessions to build entire projects; visualises voice with a Three.js particle orb.",
-    stack: ["Python", "FastAPI", "Three.js", "Claude API", "Fish Audio TTS", "WebSocket"],
-    accent: "terminal-green",
-    icon: Terminal,
-  },
-  {
-    id: "02",
-    name: "Harry's F1 Live Dashboard",
-    tagline: "True-live Formula 1 telemetry",
-    description:
-      "Custom-built React dashboard bypassing commercial F1 API locks by reading directly from native SignalR broadcast arrays. InfluxDB-backed live pipeline polling every 5s, plus a browser-native race replay engine.",
-    stack: ["React", "TypeScript", "InfluxDB", "Vite", "Python", "OpenF1"],
-    accent: "terminal-amber",
-    icon: Cpu,
-  },
-  {
-    id: "03",
-    name: "Personal Schedule Dashboard",
-    tagline: "Local-first deadline & event tracker",
-    description:
-      "Single-user schedule manager with deterministic text parsing, image/screenshot extraction via pluggable OCR adapter, due-soon reminders, and reports on completion trends — all persisted locally.",
-    stack: ["React 19", "TypeScript", "Vitest", "localStorage"],
-    accent: "terminal-cyan",
-    icon: Database,
-  },
-];
+// SCROLL REVEAL HOOK
+const useScrollReveal = (threshold = 0.1) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-const EXPERIENCE = [
-  {
-    role: "Business Analyst (Executive Officer)",
-    org: "Department for Work and Pensions (DWP)",
-    location: "Cardiff, UK",
-    period: "Aug 2024 — Feb 2026",
-    bullets: [
-      "Translated UK regulatory policy into operational SOPs across a 2,000+ case/month workflow — 22% reduction in audit deviations.",
-      "Wrote SQL queries against cloud-hosted case data warehouses to surface bottlenecks — drove a 19–25% improvement in case resolution timelines.",
-      "Built Python scripts (pandas, openpyxl) to automate weekly KPI extracts and reconciliation reports — saved ~8 hrs/week of manual work.",
-      "Designed Power BI dashboards on top of cloud datasets for senior leadership reviews — 35% reporting accuracy gain.",
-      "Partnered with engineering on requirements for internal tooling, writing user stories, acceptance criteria, and process maps in Jira.",
-    ],
-  },
-  {
-    role: "Business Analyst — Client Operations",
-    org: "The Contact Company",
-    location: "Birkenhead, UK",
-    period: "Jan 2024 — Aug 2024",
-    bullets: [
-      "Translated client requirements into Salesforce CRM workflow improvements — +21% first-contact resolution.",
-      "Used SQL + Excel to analyse contact-centre performance data and identify root causes of SLA breaches.",
-      "Standardised SOPs across teams — 95% reduction in onboarding errors.",
-      "Designed KPI dashboards cutting supervisor diagnostic time by 30%.",
-    ],
-  },
-  {
-    role: "Business Analyst & Operations Lead",
-    org: "Cookooc (Digital Startup)",
-    location: "Remote — India / UK",
-    period: "Jan 2020 — Dec 2023",
-    bullets: [
-      "Owned full implementation lifecycle for a 1,000+ tx/month platform — 27% cycle-time reduction.",
-      "Built lightweight Python/SQL data pipelines on cloud infra to track transactions, refunds, and vendor performance.",
-      "Applied LLM-based tooling to operational workflows — 60% manual-effort reduction.",
-      "Built dashboards & governance docs supporting leadership decisions.",
-    ],
-  },
-];
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold, rootMargin: "0px 0px -50px 0px" }
+    );
 
-const KPIS = [
-  { value: "2,000+", label: "cases/month analysed at DWP" },
-  { value: "22%", label: "reduction in audit deviations" },
-  { value: "19–25%", label: "faster case resolution" },
-  { value: "35%", label: "reporting accuracy gain" },
-  { value: "60%", label: "manual effort cut via LLM tooling" },
-  { value: "5+ yrs", label: "in regulated, data-heavy ops" },
-];
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold]);
 
-const SKILLS = {
-  "Business Analysis": ["Requirements Gathering", "Process Mapping", "Gap Analysis", "Stakeholder Alignment", "Change Facilitation"],
-  "Regulatory & Compliance": ["Policy-to-Process", "Audit Frameworks", "Governance Docs", "SOPs"],
-  "AI & Tech": ["Generative AI / LLMs", "Prompt Engineering", "NLP concepts", "Salesforce", "Automation"],
-  "Data & Reporting": ["SQL", "Power BI", "Advanced Excel", "KPI Reporting", "Root Cause Analysis"],
-  "Delivery": ["Agile", "Jira", "Iterative Implementation", "Vendor Onboarding"],
+  return { ref, isVisible };
+};
+
+// ANIMATED TYPING COMPONENT
+const Typewriter = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+  const [displayText, setDisplayText] = useState("");
+  const [started, setStarted] = useState(false);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setStarted(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+  
+  useEffect(() => {
+    if (!started) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i <= text.length) {
+        setDisplayText(text.slice(0, i));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 80);
+    return () => clearInterval(interval);
+  }, [started, text]);
+  
+  return (
+    <span>
+      {displayText}
+      <span className="inline-block w-[3px] h-[1em] bg-purple-500 ml-1 animate-pulse" />
+    </span>
+  );
+};
+
+// ENHANCED ORBITING SKILLS - Each icon rotates on its own path
+const OrbitingSkills = () => {
+  const skills = [
+    { name: "AWS", icon: "AWS", color: "#FF9900", size: "large", speed: 25 },
+    { name: "Docker", icon: "DK", color: "#2496ED", size: "large", speed: 30 },
+    { name: "Kubernetes", icon: "K8s", color: "#326CE5", size: "large", speed: 35 },
+    { name: "Terraform", icon: "TF", color: "#7B42BC", size: "medium", speed: 20 },
+    { name: "Python", icon: "Py", color: "#3776AB", size: "medium", speed: 28 },
+    { name: "GitHub Actions", icon: "GA", color: "#2088FF", size: "medium", speed: 32 },
+    { name: "TypeScript", icon: "TS", color: "#3178C6", size: "small", speed: 22 },
+    { name: "Linux", icon: "LX", color: "#FCC624", size: "small", speed: 26 },
+  ];
+
+  return (
+    <div className="relative w-[400px] h-[400px] mx-auto">
+      {/* Central glow effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-purple-600/30 rounded-full blur-[60px] animate-pulse" />
+      
+      {/* Central logo */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] border-2 border-white/20">
+          <Cloud className="w-10 h-10" />
+        </div>
+      </div>
+      
+      {/* Orbit paths (visual only) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full border border-purple-500/10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-purple-500/5" />
+      
+      {/* Skill icons - each on its own independent orbit */}
+      {skills.map((skill, index) => {
+        const isInner = index < 4;
+        const radius = isInner ? 140 : 180;
+        const startAngle = (index * 90) + (isInner ? 0 : 45);
+        const duration = skill.speed;
+        const delay = index * -3;
+        
+        return (
+          <div
+            key={skill.name}
+            className="absolute top-1/2 left-1/2"
+            style={{
+              animation: `orbit-${index} ${duration}s linear infinite`,
+              animationDelay: `${delay}s`,
+            }}
+          >
+            <div
+              className={`
+                flex items-center justify-center rounded-xl font-bold
+                transition-all duration-300 hover:scale-125 cursor-pointer
+                shadow-lg border border-white/10 backdrop-blur-sm
+                ${skill.size === 'large' ? 'w-14 h-14 text-xs' : 
+                  skill.size === 'medium' ? 'w-12 h-12 text-[10px]' : 'w-10 h-10 text-[9px]'}
+              `}
+              style={{
+                background: 'rgba(30, 30, 50, 0.8)',
+                color: skill.color,
+                transform: `translate(-50%, -50%) translateX(${radius}px)`,
+                boxShadow: `0 0 20px ${skill.color}40`,
+              }}
+            >
+              {skill.icon}
+              {/* Tooltip */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] text-white/70">
+                {skill.name}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      
+      {/* CSS keyframes for each orbit */}
+      <style>{`
+        ${skills.map((_, index) => `
+          @keyframes orbit-${index} {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+          }
+        `).join('')}
+      `}</style>
+    </div>
+  );
+};
+
+// EXPERIENCE CARD
+const ExperienceCard = ({ 
+  title, 
+  company, 
+  period, 
+  description,
+  icon: Icon,
+  color,
+  delay = 0
+}: { 
+  title: string; 
+  company: string; 
+  period: string; 
+  description: string;
+  icon: ComponentType<{ className?: string }>;
+  color: string;
+  delay?: number;
+}) => {
+  const { ref, isVisible } = useScrollReveal();
+  
+  return (
+    <div 
+      ref={ref}
+      className={`
+        group relative bg-slate-900/60 backdrop-blur-md 
+        border border-slate-700/50 rounded-2xl p-6 
+        hover:border-purple-500/50 transition-all duration-500
+        hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+      `}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center mb-4 
+        group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
+      <p className="text-purple-400 text-sm font-medium mb-1">{company}</p>
+      <p className="text-slate-500 text-xs mb-3 font-mono">{period}</p>
+      <p className="text-slate-400 text-sm leading-relaxed">{description}</p>
+    </div>
+  );
+};
+
+// PROJECT CARD
+const ProjectCard = ({ 
+  title, 
+  subtitle,
+  description, 
+  image,
+  tags,
+  github,
+  live,
+  align = "left",
+  delay = 0
+}: { 
+  title: string; 
+  subtitle?: string;
+  description: string; 
+  image: string;
+  tags: string[];
+  github?: string;
+  live?: string;
+  align?: "left" | "right";
+  delay?: number;
+}) => {
+  const { ref, isVisible } = useScrollReveal();
+  
+  return (
+    <div 
+      ref={ref}
+      className={`
+        grid lg:grid-cols-2 gap-8 items-center
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}
+        transition-all duration-1000
+      `}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className={`${align === "right" ? "lg:order-2" : ""}`}>
+        <div className="text-purple-500 text-sm font-medium mb-2 uppercase tracking-wider">
+          {subtitle || "Featured Project"}
+        </div>
+        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{title}</h3>
+        <p className="text-slate-400 leading-relaxed mb-6">{description}</p>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {tags.map(tag => (
+            <span 
+              key={tag} 
+              className="px-3 py-1 bg-slate-800/80 text-slate-300 text-xs rounded-full 
+                border border-slate-700 hover:border-purple-500/50 transition-colors"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="flex gap-4">
+          {github && (
+            <a href={github} className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group">
+              <Github className="w-5 h-5" />
+              <span className="text-sm group-hover:underline">Source</span>
+            </a>
+          )}
+          {live && (
+            <a href={live} className="text-slate-400 hover:text-purple-400 transition-colors flex items-center gap-2 group">
+              <ExternalLink className="w-5 h-5" />
+              <span className="text-sm group-hover:underline">Live Demo</span>
+            </a>
+          )}
+        </div>
+      </div>
+      <div className={`${align === "right" ? "lg:order-1" : ""}`}>
+        <div className="relative group rounded-xl overflow-hidden border border-slate-700/50 
+          hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_60px_rgba(139,92,246,0.2)]">
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent z-10" />
+          <img 
+            src={image} 
+            alt={title}
+            className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// STATS COMPONENT
+const StatCard = ({ number, label, suffix = "" }: { number: number; label: string; suffix?: string }) => {
+  const { ref, isVisible } = useScrollReveal();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const duration = 2000;
+    const steps = 60;
+    const increment = number / steps;
+    let current = 0;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= number) {
+        setCount(number);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
+    }, duration / steps);
+    
+    return () => clearInterval(timer);
+  }, [isVisible, number]);
+
+  return (
+    <div 
+      ref={ref}
+      className={`
+        text-center p-6 bg-slate-900/40 rounded-2xl border border-slate-800
+        hover:border-purple-500/30 transition-all duration-500
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+      `}
+    >
+      <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+        {count}{suffix}
+      </div>
+      <div className="text-slate-500 text-sm">{label}</div>
+    </div>
+  );
 };
 
 const Index = () => {
-  const [time, setTime] = useState(new Date());
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Mouse parallax effect
   useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const { ref: heroRef, isVisible: heroVisible } = useScrollReveal();
+
   return (
-    <div className="min-h-screen text-foreground relative overflow-x-hidden">
-      {/* Radial glow */}
-      <div className="pointer-events-none fixed inset-0 -z-10" style={{ background: "var(--gradient-radial)" }} />
+    <div className="min-h-screen bg-[#0a0a1a] text-white overflow-x-hidden">
+      {/* Animated background orbs with parallax */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[150px]"
+          style={{ transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)` }}
+        />
+        <div 
+          className="absolute top-[40%] right-[-5%] w-[500px] h-[500px] bg-pink-600/15 rounded-full blur-[120px]"
+          style={{ transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px)` }}
+        />
+        <div 
+          className="absolute bottom-[-10%] left-[30%] w-[400px] h-[400px] bg-indigo-600/15 rounded-full blur-[100px]"
+          style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }}
+        />
+      </div>
 
-      {/* Top bar */}
-      <header className="border-b border-border/60 backdrop-blur-sm bg-background/70 sticky top-0 z-50">
-        <div className="container flex items-center justify-between py-3 mono text-xs">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-muted-foreground">harishmaran<span className="text-primary">@</span>portfolio</span>
-            <span className="text-muted-foreground hidden sm:inline">: ~/</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-5 text-muted-foreground">
-            <a href="#about" className="hover:text-primary transition-colors">about</a>
-            <a href="#projects" className="hover:text-primary transition-colors">projects</a>
-            <a href="#experience" className="hover:text-primary transition-colors">experience</a>
-            <a href="#skills" className="hover:text-primary transition-colors">skills</a>
-            <a href="#contact" className="hover:text-primary transition-colors">contact</a>
-          </nav>
-          <div className="text-muted-foreground tabular-nums hidden sm:block">
-            {time.toISOString().slice(11, 19)} UTC
-          </div>
-        </div>
-      </header>
-
-      {/* HERO */}
-      <section className="container pt-20 md:pt-32 pb-24 md:pb-40">
-        <div className="mono text-xs text-muted-foreground mb-6 terminal-prompt">whoami</div>
-        <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl leading-[0.95] tracking-tight mb-6">
-          Harishmaran <br />
-          <span className="text-primary glow-text">Subbaiah</span> Thirumaran
-        </h1>
-        <p className="text-lg md:text-2xl text-muted-foreground max-w-3xl mb-8 leading-relaxed">
-          Business Analyst translating <span className="text-foreground">regulatory complexity</span> into operational systems —
-          and an after-hours <span className="text-foreground">builder</span> shipping AI assistants, live telemetry dashboards, and local-first tools.
-        </p>
-
-        <div className="flex flex-wrap gap-3 mono text-xs mb-12">
-          <span className="px-3 py-1.5 border border-border bg-card/50 rounded-sm">5+ years • regulated environments</span>
-          <span className="px-3 py-1.5 border border-border bg-card/50 rounded-sm">AI-enhanced process design</span>
-          <span className="px-3 py-1.5 border border-primary/40 text-primary bg-primary/5 rounded-sm flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> available — Amsterdam, NL
-          </span>
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          <a href="#projects" className="group inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 mono text-sm hover:bg-primary/90 transition-colors">
-            view_projects() <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/80 backdrop-blur-xl border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <a href="#" className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            H.
           </a>
-          <a href="/Harishmaran_Subbaiah_Thirumaran_CV.pdf" download className="inline-flex items-center gap-2 border border-primary/40 text-primary bg-primary/5 px-5 py-3 mono text-sm hover:bg-primary/10 transition-colors">
-            <Download className="h-4 w-4" /> download_cv.pdf
-          </a>
-          <a href="mailto:harishmaran2001@gmail.com" className="inline-flex items-center gap-2 border border-border px-5 py-3 mono text-sm hover:border-primary hover:text-primary transition-colors">
-            <Mail className="h-4 w-4" /> get_in_touch()
-          </a>
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" className="container py-20 md:py-28 border-t border-border/60">
-        <SectionHeader index="01" title="about" subtitle="story · education · KPIs · craft" />
-        <div className="grid md:grid-cols-3 gap-10 mt-12">
-          <div className="md:col-span-2 space-y-8 text-muted-foreground leading-relaxed text-base md:text-lg">
-            <div>
-              <div className="mono text-xs text-primary mb-3">## the_story_so_far</div>
-              <p className="mb-4">
-                I started out as a <span className="text-foreground">mechanical engineer</span> in Tamil Nadu, India — but spent more time automating spreadsheets than designing parts. That pull toward <span className="text-foreground">systems thinking</span> took me from engineering into operations: first co-running <span className="text-foreground">Cookooc</span>, a digital startup processing 1,000+ transactions a month, where I learned to translate fuzzy founder ideas into repeatable workflows.
-              </p>
-              <p className="mb-4">
-                A move to the UK for an MSc at the <span className="text-foreground">University of Liverpool</span> opened up regulated industries — first as a <span className="text-foreground">Business Analyst at The Contact Company</span> rebuilding Salesforce flows, then as a <span className="text-foreground">Business Analyst at the UK's Department for Work and Pensions</span>, where policy literally becomes code in a 2,000+ case/month pipeline.
-              </p>
-              <p>
-                Today I'm in <span className="text-foreground">Amsterdam</span>, looking for the next role where regulatory rigour, cloud data tooling, and AI all meet — and building open-source projects on the side to keep the engineering muscles warm.
-              </p>
-            </div>
-
-            <div>
-              <div className="mono text-xs text-primary mb-3">## education</div>
-              <ul className="space-y-3">
-                <li className="flex gap-3">
-                  <span className="text-primary mono mt-1.5 text-xs">▸</span>
-                  <span><span className="text-foreground">MSc International Business</span> — University of Liverpool, UK (2:1). Strategy, managerial finance, international management.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary mono mt-1.5 text-xs">▸</span>
-                  <span><span className="text-foreground">BE Mechanical Engineering</span> — Kumaraguru College of Tech, Anna University (8.1/10). Foundation in systems, quantitative analysis, and CAD.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="mono text-xs text-primary mb-3">## the_business_analyst_craft</div>
-              <p className="mb-4">
-                My day-to-day at DWP and previously at The Contact Company is <span className="text-foreground">Business Analyst work in regulated environments</span> — but it's far from PowerPoint-only. I write <span className="text-foreground">SQL</span> against cloud-hosted case warehouses to find bottlenecks, build <span className="text-foreground">Python</span> scripts (pandas, openpyxl, requests) to automate weekly extracts and reconciliations, and stand up <span className="text-foreground">Power BI</span> dashboards on top of those datasets for senior reviews.
-              </p>
-              <p>
-                I treat requirements like a product spec: user stories in Jira, acceptance criteria, process maps, and a clear definition of done. The same instinct that makes me a decent engineer makes me a sharper analyst — I want to know <span className="text-foreground">how the data actually moves</span>, not just what the report says.
-              </p>
-            </div>
-
-            <p className="mono text-sm text-primary pt-2">
-              // currently in Amsterdam — Orientation Year Visa, no sponsorship required.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            <div className="space-y-3 mono text-xs">
-              <InfoRow label="role" value="Business Analyst" />
-              <InfoRow label="focus" value="Regulatory · SQL · Python · BI" />
-              <InfoRow label="location" value="Amsterdam, NL" />
-              <InfoRow label="visa" value="Orientation Year — no sponsorship" />
-              <InfoRow label="status" value="open to opportunities" highlight />
-            </div>
-
-            <div className="border border-border bg-card/40 p-5">
-              <div className="mono text-xs text-primary mb-4">## kpis_shipped</div>
-              <div className="grid grid-cols-2 gap-4">
-                {KPIS.map((k) => (
-                  <div key={k.label}>
-                    <div className="font-serif text-2xl text-foreground leading-none mb-1">{k.value}</div>
-                    <div className="mono text-[10px] text-muted-foreground leading-snug">{k.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <a href="/Harishmaran_Subbaiah_Thirumaran_CV.pdf" download className="flex items-center justify-between border border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 px-4 py-3 mono text-xs transition-colors">
-              <span>download_full_cv.pdf</span>
-              <Download className="h-4 w-4" />
-            </a>
+          <div className="hidden md:flex gap-8 text-sm font-medium">
+            {['Home', 'About', 'Experience', 'Projects', 'Lab'].map((item) => (
+              <a 
+                key={item} 
+                href={`#${item.toLowerCase()}`}
+                className="text-slate-400 hover:text-white transition-colors relative group"
+              >
+                {item}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300" />
+              </a>
+            ))}
           </div>
         </div>
-      </section>
+      </nav>
 
-      {/* PROJECTS */}
-      <section id="projects" className="container py-20 md:py-28 border-t border-border/60">
-        <SectionHeader index="02" title="projects" subtitle="things I build outside the day job" />
-        <div className="grid gap-6 mt-12">
-          {PROJECTS.map((p) => {
-            const Icon = p.icon;
-            return (
-              <article key={p.id} className="group relative border border-border bg-card/40 hover:bg-card/70 hover:border-primary/40 transition-all p-6 md:p-8">
-                <div className="grid md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-start">
-                  <div className="flex md:flex-col items-center md:items-start gap-3">
-                    <span className="mono text-xs text-muted-foreground">/{p.id}</span>
-                    <Icon className={`h-6 w-6 text-${p.accent}`} style={{ color: `hsl(var(--${p.accent}))` }} />
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-3xl md:text-4xl mb-1">{p.name}</h3>
-                    <p className="mono text-xs text-muted-foreground mb-4">// {p.tagline}</p>
-                    <p className="text-muted-foreground leading-relaxed mb-5 max-w-2xl">{p.description}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {p.stack.map((s) => (
-                        <span key={s} className="mono text-[10px] uppercase tracking-wider px-2 py-1 bg-secondary text-secondary-foreground border border-border/50">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <ArrowUpRight className="hidden md:block h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:-translate-y-1 group-hover:translate-x-1 transition-all" />
+      {/* Hero Section */}
+      <section id="home" className="relative z-10 min-h-screen flex items-center px-6 pt-20">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left - Profile Card */}
+            <div 
+              ref={heroRef}
+              className={`
+                relative bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 
+                border border-slate-700/50 shadow-[0_0_60px_rgba(139,92,246,0.1)]
+                overflow-hidden
+                ${heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
+                transition-all duration-1000
+              `}
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+              <div className="relative">
+                <div className="text-purple-500 text-sm font-medium mb-2 uppercase tracking-widest">Hello! I Am</div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Harishmaran</h1>
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-4xl mb-6 shadow-2xl">
+                  <Cloud className="w-10 h-10 text-white" />
                 </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* EXPERIENCE */}
-      <section id="experience" className="container py-20 md:py-28 border-t border-border/60">
-        <SectionHeader index="03" title="experience" />
-        <div className="mt-12 space-y-8">
-          {EXPERIENCE.map((e, i) => (
-            <div key={i} className="grid md:grid-cols-[200px_1fr] gap-4 md:gap-8 pb-8 border-b border-border/40 last:border-0">
-              <div className="mono text-xs text-muted-foreground">
-                <div className="text-primary mb-1">{e.period}</div>
-                <div className="flex items-center gap-1.5"><MapPin className="h-3 w-3" /> {e.location}</div>
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl md:text-3xl leading-tight">{e.role}</h3>
-                <div className="mono text-sm text-muted-foreground mb-4 flex items-center gap-2 mt-1">
-                  <Briefcase className="h-3.5 w-3.5" /> {e.org}
-                </div>
-                <ul className="space-y-2 text-muted-foreground">
-                  {e.bullets.map((b, j) => (
-                    <li key={j} className="flex gap-3 leading-relaxed">
-                      <span className="text-primary mono mt-1.5 text-xs">▸</span>
-                      <span>{b}</span>
-                    </li>
+                <div className="flex gap-3">
+                  {[
+                    { icon: Linkedin, href: "https://linkedin.com/in/harishmaran", label: "LinkedIn" },
+                    { icon: Github, href: "https://github.com/Harishmaranthirumaran", label: "GitHub" },
+                    { icon: Mail, href: "mailto:harishmaran2001@gmail.com", label: "Email" }
+                  ].map(({ icon: Icon, href, label }) => (
+                    <a 
+                      key={label}
+                      href={href}
+                      className="w-12 h-12 rounded-xl bg-slate-800/50 border border-slate-700/50 
+                        flex items-center justify-center text-slate-400 
+                        hover:text-white hover:bg-purple-500/20 hover:border-purple-500/50 
+                        transition-all duration-300 group"
+                      aria-label={label}
+                    >
+                      <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    </a>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* EDUCATION */}
-      <section className="container py-20 md:py-28 border-t border-border/60">
-        <SectionHeader index="04" title="education & certifications" />
-        <div className="grid md:grid-cols-2 gap-6 mt-12">
-          <div className="border border-border bg-card/40 p-6">
-            <GraduationCap className="h-5 w-5 text-primary mb-3" />
-            <h3 className="font-serif text-2xl mb-1">MSc International Business</h3>
-            <p className="text-muted-foreground mono text-xs mb-3">University of Liverpool, UK · 2:1</p>
-            <p className="text-sm text-muted-foreground">Global Corporate Strategy · Managerial Finance · International Management</p>
-          </div>
-          <div className="border border-border bg-card/40 p-6">
-            <GraduationCap className="h-5 w-5 text-accent mb-3" />
-            <h3 className="font-serif text-2xl mb-1">BE Mechanical Engineering</h3>
-            <p className="text-muted-foreground mono text-xs mb-3">Kumaraguru College of Tech · Anna University · 8.1/10</p>
-          </div>
-          <div className="border border-border bg-card/40 p-6 md:col-span-2">
-            <Award className="h-5 w-5 text-primary mb-3" />
-            <h3 className="font-serif text-2xl mb-4">Certifications</h3>
-            <ul className="grid sm:grid-cols-2 gap-2 mono text-sm text-muted-foreground">
-              <li className="flex gap-2"><span className="text-primary">▸</span> Google Project Management — Coursera (2024)</li>
-              <li className="flex gap-2"><span className="text-primary">▸</span> Generative AI for Business — LinkedIn (2024)</li>
-              <li className="flex gap-2"><span className="text-primary">▸</span> Microsoft Power BI Data Analyst (PL-300) — in progress</li>
-              <li className="flex gap-2"><span className="text-primary">▸</span> Agile Project Management Fundamentals</li>
-              <li className="flex gap-2 sm:col-span-2"><span className="text-primary">▸</span> HEAR Accreditation — University of Liverpool (2023)</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" className="container py-20 md:py-28 border-t border-border/60">
-        <SectionHeader index="05" title="skills" subtitle="the working toolkit" />
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
-          {Object.entries(SKILLS).map(([cat, items]) => (
-            <div key={cat} className="border border-border bg-card/40 p-5 hover:border-primary/40 transition-colors">
-              <div className="mono text-xs text-primary mb-3 flex items-center gap-2">
-                <GitBranch className="h-3.5 w-3.5" />{cat.toLowerCase().replace(/\s+/g, "_")}
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {items.map((s) => (
-                  <span key={s} className="text-xs px-2 py-1 bg-secondary border border-border/50">{s}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="container py-20 md:py-32 border-t border-border/60">
-        <SectionHeader index="06" title="contact" />
-        <div className="mt-12 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div>
-            <h2 className="font-serif text-4xl md:text-6xl leading-tight mb-6">
-              Let's build something <span className="text-primary glow-text">measurable</span>.
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl">
-              Open to Business Analyst, Regulatory Change, and AI-enhanced operations roles in Amsterdam &amp; remote across Europe.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-3 max-w-2xl">
-              <a href="mailto:harishmaran2001@gmail.com" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-4 transition-all">
-                <div>
-                  <div className="mono text-[10px] text-muted-foreground mb-1">email</div>
-                  <div className="text-foreground text-sm truncate">harishmaran2001@gmail.com</div>
-                </div>
-                <Mail className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
-              </a>
-              <a href="https://linkedin.com/in/harishmaran" target="_blank" rel="noreferrer" className="group flex items-center justify-between border border-border bg-card/40 hover:border-primary hover:bg-card p-4 transition-all">
-                <div>
-                  <div className="mono text-[10px] text-muted-foreground mb-1">linkedin</div>
-                  <div className="text-foreground text-sm">/in/harishmaran</div>
-                </div>
-                <Linkedin className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
-              </a>
-              <a href="/Harishmaran_Subbaiah_Thirumaran_CV.pdf" download className="group sm:col-span-2 flex items-center justify-between border border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 p-4 transition-all">
-                <div>
-                  <div className="mono text-[10px] text-muted-foreground mb-1">curriculum vitae</div>
-                  <div className="text-sm">Download full CV (PDF)</div>
-                </div>
-                <Download className="h-4 w-4 flex-shrink-0 ml-2" />
-              </a>
+            
+            {/* Right - Hero Text */}
+            <div className={`text-center lg:text-left transition-all duration-1000 delay-300 ${heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+              <p className="text-slate-400 text-lg mb-4">A DevOps Engineer who</p>
+              <h2 className="text-5xl md:text-7xl font-bold mb-2">
+                <span className="text-white">Automates</span>
+              </h2>
+              <h2 className="text-5xl md:text-7xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+                  everything...
+                </span>
+              </h2>
+              <p className="text-slate-400 text-lg max-w-lg mx-auto lg:mx-0">
+                Currently building scalable infrastructure and CI/CD pipelines that empower teams to ship faster and more reliably.
+              </p>
             </div>
           </div>
-
-          <ContactForm />
         </div>
       </section>
 
-      <footer className="container py-10 border-t border-border/60 mono text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-        <div>© {new Date().getFullYear()} Harishmaran S. Thirumaran</div>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> system online
+      {/* Stats Section */}
+      <section className="relative z-10 py-20 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+          <StatCard number={5} suffix="+" label="Years Experience" />
+          <StatCard number={99} suffix=".9%" label="Uptime Maintained" />
+          <StatCard number={40} suffix="%" label="Deploy Time Reduced" />
+          <StatCard number={3} suffix="+" label="Cloud Platforms" />
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="relative z-10 py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+            About Me
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            I'm a <span className="text-purple-400"><Typewriter text="DevOps Engineer" delay={500} /></span>
+          </h2>
+          <p className="text-slate-400 text-lg mb-4">
+            Currently, I'm a Business Analyst at{" "}
+            <a href="https://www.gov.uk/government/organisations/department-for-work-pensions" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">DWP</a>
+            {" "}, transitioning into DevOps.
+          </p>
+          <p className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto">
+            A self-taught cloud infrastructure enthusiast, functioning in the industry for 5+ years now. 
+            I build meaningful and reliable systems that create an equilibrium between developer velocity 
+            and operational stability.
+          </p>
+        </div>
+      </section>
+
+      {/* Work Experience Section */}
+      <section id="experience" className="relative z-10 py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+              Professional Journey
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Work Experience</h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            <ExperienceCard
+              title="DevOps Engineer"
+              company="DWP - Department for Work and Pensions"
+              period="Aug 2024 - Present"
+              description="Leading cloud migration initiatives and implementing Infrastructure as Code with Terraform and AWS. Driving automation of CI/CD pipelines for government digital services."
+              icon={Cloud}
+              color="bg-gradient-to-br from-blue-500 to-indigo-600"
+              delay={0}
+            />
+            <ExperienceCard
+              title="Cloud Infrastructure Engineer"
+              company="The Contact Company"
+              period="Jan 2024 - Aug 2024"
+              description="Built CI/CD pipelines and automated deployment processes, reducing release time by 40%. Implemented container orchestration with Kubernetes and Docker."
+              icon={Layers}
+              color="bg-gradient-to-br from-purple-500 to-pink-600"
+              delay={100}
+            />
+            <ExperienceCard
+              title="Systems Administrator"
+              company="Cookooc"
+              period="Jan 2020 - Dec 2023"
+              description="Managed cloud infrastructure for digital platform, ensuring 99.9% uptime for 1000+ monthly transactions. Automated server deployment and monitoring."
+              icon={Server}
+              color="bg-gradient-to-br from-emerald-500 to-teal-600"
+              delay={200}
+            />
+            <ExperienceCard
+              title="Graduate Student"
+              company="University of Liverpool"
+              period="2023 - 2024"
+              description="MSc International Business with focus on data analytics and digital transformation. Achieved 2:1 Honours with specialization in cloud strategy."
+              icon={GraduationCap}
+              color="bg-gradient-to-br from-amber-500 to-orange-600"
+              delay={300}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Orbit Section */}
+      <section className="relative z-10 py-24 px-6 overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+            Technical Arsenal
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Skills & Technologies</h2>
+          <p className="text-slate-400 mb-16 max-w-2xl mx-auto">
+            I'm currently looking to join a cross-functional team that values improving developer experience 
+            through reliable infrastructure and accessible automation.
+          </p>
+          
+          <div className="flex justify-center py-12">
+            <OrbitingSkills />
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects Section */}
+      <section id="projects" className="relative z-10 py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+              Featured Work
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Featured Projects</h2>
+          </div>
+          
+          <div className="space-y-32">
+            {/* Retail Store Project */}
+            <ProjectCard
+              title="Retail Store Sample Application"
+              subtitle="AWS Cloud Infrastructure"
+              description="Implemented complete cloud infrastructure for AWS Containers Retail Sample using Terraform. Constructed VPC with public/private subnets, deployed ECS cluster with Fargate compute, set up RDS for database, DynamoDB tables, ElastiCache, and configured ECS Service Connect for inter-service communication. Enabled OpenTelemetry integration for observability and Container Insights for monitoring."
+              image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80"
+              tags={["Terraform", "ECS", "Fargate", "VPC", "Service Connect", "OpenTelemetry", "RDS", "DynamoDB"]}
+              github="https://github.com/Harishmaranthirumaran/retail-store-sample-app"
+              align="left"
+              delay={0}
+            />
+            
+            {/* Kubernetes EKS Project */}
+            <ProjectCard
+              title="Kubernetes on EKS"
+              subtitle="Cloud Native Orchestration"
+              description="Extended retail sample application with EKS deployment capabilities. Configured managed node groups across multiple availability zones, integrated OpenTelemetry with AWS Distro for observability, and enabled Istio service mesh. Automated Helm chart deployments and implemented GitOps workflows for infrastructure as code."
+              image="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=1200&q=80"
+              tags={["EKS", "Kubernetes", "Helm", "Istio", "GitOps", "Terraform", "AWS"]}
+              github="https://github.com/Harishmaranthirumaran/retail-store-sample-app/tree/main/terraform/eks"
+              align="right"
+              delay={200}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative z-10 py-24 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+            Get In Touch
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Contact</h2>
+          <p className="text-slate-400 mb-8 max-w-xl mx-auto">
+            I'm currently looking to join a cross-functional team that values improving developer experience 
+            through reliable infrastructure, or have a project in mind? Let's connect.
+          </p>
+          <a 
+            href="mailto:harishmaran2001@gmail.com"
+            className="inline-flex items-center gap-2 text-xl md:text-2xl font-medium text-purple-400 hover:text-purple-300 transition-colors group"
+          >
+            harishmaran2001@gmail.com
+            <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+          </a>
+          
+          <div className="flex justify-center gap-6 mt-12">
+            {[
+              { icon: Linkedin, href: "https://linkedin.com/in/harishmaran", label: "LinkedIn" },
+              { icon: Github, href: "https://github.com/Harishmaranthirumaran", label: "GitHub" },
+              { icon: Mail, href: "mailto:harishmaran2001@gmail.com", label: "Email" }
+            ].map(({ icon: Icon, href, label }) => (
+              <a 
+                key={label}
+                href={href}
+                className="w-14 h-14 rounded-xl bg-slate-800/50 border border-slate-700/50 
+                  flex items-center justify-center text-slate-400 
+                  hover:text-white hover:bg-purple-500/20 hover:border-purple-500/50 
+                  transition-all duration-300 group"
+                aria-label={label}
+              >
+                <Icon className="w-6 h-6 group-hover:scale-110 transition-transform" />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 py-12 px-6 border-t border-slate-800/50">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              H.
+            </div>
+            <span className="text-slate-500 text-sm">Harishmaran S. Thirumaran</span>
+          </div>
+          <p className="text-slate-600 text-sm">
+            Designed & Built with precision
+          </p>
         </div>
       </footer>
     </div>
   );
 };
-
-const SectionHeader = ({ index, title, subtitle }: { index: string; title: string; subtitle?: string }) => (
-  <div className="flex items-end justify-between gap-4 flex-wrap">
-    <div>
-      <div className="mono text-xs text-primary mb-2">/{index}</div>
-      <h2 className="font-serif text-4xl md:text-5xl">{title}</h2>
-      {subtitle && <p className="mono text-xs text-muted-foreground mt-2">// {subtitle}</p>}
-    </div>
-    <div className="flex-1 h-px bg-border max-w-[40%] mb-3 hidden sm:block" />
-  </div>
-);
-
-const InfoRow = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
-  <div className="flex items-start justify-between gap-4 py-2 border-b border-border/40">
-    <span className="text-muted-foreground">{label}</span>
-    <span className={highlight ? "text-primary flex items-center gap-1.5" : "text-foreground text-right"}>
-      {highlight && <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />}
-      {value}
-    </span>
-  </div>
-);
 
 export default Index;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, CheckCircle } from "lucide-react";
 
 const contactSchema = z.object({
   name: z
@@ -51,14 +51,13 @@ const ContactForm = () => {
 
     setSubmitting(true);
 
-    // Open user's mail client with prefilled message — no backend required
+    // Open user's mail client with prefilled message
     const subject = `Portfolio contact — ${result.data.name}`;
     const body = `${result.data.message}\n\n— ${result.data.name}\n${result.data.email}`;
     const mailto = `mailto:harishmaran2001@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
 
-    // Small delay so the spinner is visible
     setTimeout(() => {
       window.location.href = mailto;
       setSubmitting(false);
@@ -74,75 +73,84 @@ const ContactForm = () => {
 
   if (sent) {
     return (
-      <div className="border border-primary/40 bg-primary/5 p-8 text-center">
-        <div className="mono text-xs text-primary mb-3">// transmission_complete</div>
-        <h3 className="font-serif text-3xl mb-3">Message ready to send ✓</h3>
-        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-          Your email client just opened with the message prefilled. If nothing happened, you can email me directly at{" "}
-          <a className="text-primary underline" href="mailto:harishmaran2001@gmail.com">
+      <div className="text-center py-12">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle className="w-8 h-8 text-green-600" />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+        <p className="text-gray-600 mb-6">
+          Your email client should have opened. If not, you can email me directly at{" "}
+          <a className="text-indigo-600 font-medium" href="mailto:harishmaran2001@gmail.com">
             harishmaran2001@gmail.com
           </a>
-          .
         </p>
         <button
           onClick={() => setSent(false)}
-          className="mono text-xs px-4 py-2 border border-border hover:border-primary hover:text-primary transition-colors"
+          className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
         >
-          send_another()
+          Send Another Message
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-border bg-card/40 p-6 md:p-8 space-y-5">
-      <div className="mono text-xs text-primary mb-2">// send_message()</div>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-1">Send a Message</h3>
+        <p className="text-sm text-gray-500">I'll get back to you as soon as possible.</p>
+      </div>
 
-      <Field label="name" error={errors.name}>
+      <Field label="Your Name" error={errors.name}>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={100}
-          placeholder="Your name"
-          className="w-full bg-background border border-border px-3 py-2.5 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors mono text-sm"
+          placeholder="John Doe"
+          className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
         />
       </Field>
 
-      <Field label="email" error={errors.email}>
+      <Field label="Email Address" error={errors.email}>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           maxLength={255}
-          placeholder="you@domain.com"
-          className="w-full bg-background border border-border px-3 py-2.5 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors mono text-sm"
+          placeholder="you@company.com"
+          className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
         />
       </Field>
 
-      <Field label="message" error={errors.message} hint={`${message.length}/1000`}>
+      <Field label="Message" error={errors.message}>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           maxLength={1000}
-          rows={5}
-          placeholder="What would you like to discuss?"
-          className="w-full bg-background border border-border px-3 py-2.5 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors mono text-sm resize-none"
+          rows={4}
+          placeholder="Tell me about your project or opportunity..."
+          className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all resize-none"
         />
+        <div className="text-right text-xs text-gray-400 mt-1">
+          {message.length}/1000
+        </div>
       </Field>
 
       <button
         type="submit"
         disabled={submitting}
-        className="group inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 mono text-sm hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-200"
       >
         {submitting ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" /> sending...
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Sending...
           </>
         ) : (
           <>
-            transmit() <Send className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+            Send Message
+            <Send className="w-5 h-5" />
           </>
         )}
       </button>
@@ -153,21 +161,21 @@ const ContactForm = () => {
 const Field = ({
   label,
   error,
-  hint,
   children,
 }: {
   label: string;
   error?: string;
-  hint?: string;
   children: React.ReactNode;
 }) => (
   <div>
-    <div className="flex items-center justify-between mb-1.5">
-      <label className="mono text-xs text-muted-foreground">{label}</label>
-      {hint && <span className="mono text-[10px] text-muted-foreground">{hint}</span>}
-    </div>
+    <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
     {children}
-    {error && <p className="mono text-xs text-destructive mt-1.5">▸ {error}</p>}
+    {error && (
+      <p className="text-sm text-red-500 mt-1.5 flex items-center gap-1">
+        <span className="w-1.5 h-1.5 bg-red-500 rounded-full inline-block" />
+        {error}
+      </p>
+    )}
   </div>
 );
 
