@@ -706,7 +706,7 @@ const Index = () => {
               title="Live Formula 1 Telemetry Dashboard"
               subtitle="Real-Time Data Pipeline · React & InfluxDB"
               description="A self-built live F1 dashboard that streams native telemetry from the F1 SignalR broadcast feed, re-sorting every competitive metric across the grid every 5 seconds. A Dockerised fastf1 ingestion service writes into InfluxDB, which a Vite-proxied React front end queries with Flux, plus a browser-native race replay powered by OpenF1 session data. Deployed live on Vercel."
-              image="https://images.unsplash.com/photo-1541447271487-09612b3f49f7?w=1200&q=80&auto=format&fit=crop"
+              image="/f1-pitwall.jpg"
               tags={["React", "TypeScript", "InfluxDB", "Docker", "Python (fastf1)", "OpenF1", "Vercel"]}
               github="https://github.com/HARISHMARAN/Harry-s-F1-data"
               live="https://harry-s-f1-data.vercel.app"
