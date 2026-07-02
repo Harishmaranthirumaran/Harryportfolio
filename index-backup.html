@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<<<<<<< HEAD
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harishmaran Subbaiah Thirumaran Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mediaqueries.css" />
+  </head>
+  <body>
+    <nav id="desktop-nav">
+      <div class="logo">Harishmaran Subbaiah Thirumaran</div>
+      <div>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <div class="logo">Harishmaran Subbaiah Thirumaran</div>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
+          <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+        </div>
+      </div>
+    </nav>
+    <section id="profile">
+      <div class="section__pic-container">
+        <img src="assets/profile-pic.png" alt="Harishmaran profile picture" />
+      </div>
+      <div class="section__text">
+        <p class="section__text__p1">Hello, I'm</p>
+        <h1 class="title">Harishmaran Subbaiah Thirumaran</h1>
+        <p class="section__text__p2">International Business Specialist</p>
+        <div class="btn-container">
+          <button
+            class="btn btn-color-2"
+            onclick="window.open('./assets/resume-example.pdf')"
+          >
+            Download CV
+          </button>
+          <button class="btn btn-color-1" onclick="location.href='#contact'">
+            Contact Info
+          </button>
+        </div>
+        <div id="socials-container">
+          <img
+            src="assets/linkedin.png"
+            alt="My LinkedIn profile"
+            class="icon"
+            onclick="location.href='https://www.linkedin.com/in/harishmaran/'"
+          />
+          <img
+            src="assets/github.png"
+            alt="My Github profile"
+            class="icon"
+            onclick="location.href='https://github.com/'"
+          />
+        </div>
+      </div>
+    </section>
+    <section id="about">
+      <p class="section__text__p1">Get To Know More</p>
+      <h1 class="title">About Me</h1>
+      <div class="section-container">
+        <div class="section__pic-container">
+          <img
+            src="assets/about-pic.png"
+            alt="Profile picture"
+            class="about-pic"
+          />
+        </div>
+        <div class="about-details-container">
+          <div class="about-containers">
+            <div class="details-container">
+              <img
+                src="assets/experience.png"
+                alt="Experience icon"
+                class="icon"
+              />
+              <h3>Experience</h3>
+              <p>2+ years <br />International Business</p>
+            </div>
+            <div class="details-container">
+              <img
+                src="assets/education.png"
+                alt="Education icon"
+                class="icon"
+              />
+              <h3>Education</h3>
+              <p>M.Sc. International Business<br />B.E. Mechanical Engineering</p>
+            </div>
+          </div>
+          <div class="text-container">
+            <p>
+              I am a dedicated professional with experience in inbound sales, investment banking, and supply chain management. My academic projects include research on sustainable supply chain management and the design and fabrication of a hexapod-based multifunctional agricultural vehicle. I possess a strong foundation in both technical and business disciplines, having completed my Master's in International Business from the University of Liverpool and a Bachelor's in Mechanical Engineering from Kumaraguru College of Technology.
+            </p>
+          </div>
+        </div>
+      </div>
+      <img
+        src="assets/arrow.png"
+        alt="Arrow icon"
+        class="icon arrow"
+        onclick="location.href='#experience'"
+      />
+    </section>
+    <section id="experience">
+      <p class="section__text__p1">Explore My</p>
+      <h1 class="title">Experience</h1>
+      <div class="experience-details-container">
+        <div class="about-containers">
+          <div class="details-container">
+            <h2 class="experience-sub-title">Inbound Sales Advisor</h2>
+            <p>The Contact Company, Birkenhead, United Kingdom</p>
+            <p>Jan 2024–June 2024</p>
+            <ul>
+              <li>Surpassed sales targets for Sainsbury Bank services.</li>
+              <li>Provided detailed reports to management for process improvements.</li>
+              <li>Enhanced customer satisfaction rates consistently between 85% and 95%.</li>
+              <li>Maintained high customer retention rate of over 90%.</li>
+              <li>Resolved financial product-related queries with a 95% resolution rate.</li>
+            </ul>
+          </div>
+          <div class="details-container">
+            <h2 class="experience-sub-title">Investment Banking Analyst Intern</h2>
+            <p>JP Morgan Chase & Co</p>
+            <p>Jan 2022–March 2022</p>
+            <ul>
+              <li>Identified an ideal M&A target through strategic and financial analysis.</li>
+              <li>Prepared comprehensive reports and managed case management systems.</li>
+              <li>Supported high-stakes decision-making processes with meticulous data management.</li>
+            </ul>
+          </div>
+          <div class="details-container">
+            <h2 class="experience-sub-title">Supply Chain Intern</h2>
+            <p>Maruti Suzuki India Limited</p>
+            <p>Dec 2019–Jan 2020</p>
+            <ul>
+              <li>Optimized supply chain processes and contributed to pricing strategy projects.</li>
+              <li>Provided administrative support to the supply chain team.</li>
+              <li>Engaged in data analysis and reporting.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <img
+        src="assets/arrow.png"
+        alt="Arrow icon"
+        class="icon arrow"
+        onclick="location.href='#projects'"
+      />
+    </section>
+    <section id="projects">
+      <p class="section__text__p1">Browse My Recent</p>
+      <h1 class="title">Projects</h1>
+      <div class="experience-details-container">
+        <div class="about-containers">
+          <div class="details-container color-container">
+            <div class="article-container">
+              <img
+                src="assets/project-1.png"
+                alt="Project 1"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">The Impact of Sustainable Supply Chain Management on Environmental Performance</h2>
+            <p>Conducted research on how sustainable supply chain practices improve environmental performance.</p>
+          </div>
+          <div class="details-container color-container">
+            <div class="article-container">
+              <img
+                src="assets/project-2.png"
+                alt="Project 2"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">Design and Fabrication of a Hexapod-Based Multifunctional Agricultural Vehicle</h2>
+            <p>Designed and fabricated a multifunctional vehicle to assist with agricultural tasks using hexapod technology.</p>
+          </div>
+        </div>
+      </div>
+      <img
+        src="assets/arrow.png"
+        alt="Arrow icon"
+        class="icon arrow"
+        onclick="location.href='#contact'"
+      />
+    </section>
+    <section id="contact">
+      <p class="section__text__p1">Feel Free to</p>
+      <h1 class="title">Contact Me</h1>
+      <div class="contact-container">
+        <div class="about-containers">
+          <div class="details-container">
+            <div class="contact-details">
+              <img src="assets/email.png" alt="Email icon" class="icon" />
+              <p>harishmaran2001@gmail.com</p>
+            </div>
+            <div class="contact-details">
+              <img src="assets/phone.png" alt="Phone icon" class="icon" />
+              <p>+44 7436208951</p>
+            </div>
+            <div class="contact-details">
+              <img
+                src="assets/linkedin.png"
+                alt="LinkedIn icon"
+                class="icon"
+              />
+              <p>
+                <a href="https://www.linkedin.com/in/harishmaran/">
+                  LinkedIn Profile
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="footer-container">
+        <p>&copy; 2024 Harishmaran Subbaiah Thirumaran. All rights reserved.</p>
+      </div>
+    </footer>
+    <script>
+      function toggleMenu() {
+        const menu = document.querySelector('.menu-links');
+        menu.classList.toggle('open');
+      }
+    </script>
+=======
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harishmaran S. Thirumaran — DevOps Engineer</title>
+    <meta name="description" content="DevOps Engineer specializing in AWS, Kubernetes, Docker, Terraform, and CI/CD automation. Building scalable cloud infrastructure and automated deployment pipelines." />
+    <meta name="author" content="Harishmaran Subbaiah Thirumaran" />
+    <meta name="keywords" content="DevOps, AWS, Kubernetes, Docker, Terraform, Cloud Infrastructure, CI/CD, Automation" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Harishmaran S. Thirumaran — DevOps Engineer & Cloud Specialist" />
+    <meta property="og:description" content="DevOps Engineer specializing in AWS, Kubernetes, Docker, Terraform, and CI/CD automation. Available for opportunities in Amsterdam & remote." />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://harishmaran.dev/og-image.png" />
+    <meta property="og:url" content="https://harishmaran.dev" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@harishmaran" />
+    <meta name="twitter:title" content="Harishmaran S. Thirumaran — DevOps Engineer" />
+    <meta name="twitter:description" content="DevOps Engineer specializing in AWS, Kubernetes, Docker, Terraform, and CI/CD automation." />
+    <meta name="twitter:image" content="https://harishmaran.dev/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Preconnect for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Theme color -->
+    <meta name="theme-color" content="#6366f1" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+>>>>>>> 9bcfee6591f3f88186a1f0347f25a8c316a09148
+  </body>
+</html>
