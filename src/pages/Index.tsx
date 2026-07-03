@@ -19,8 +19,11 @@ import {
   Cpu,
   GitBranch,
   Workflow,
-  Boxes
+  Boxes,
+  Menu,
+  X
 } from "lucide-react";
+import SpaceBackground from "@/components/SpaceBackground";
 
 // SCROLL REVEAL HOOK
 const useScrollReveal = (threshold = 0.1) => {
@@ -213,8 +216,8 @@ const ExperienceCard = ({
       className={`
         group relative bg-slate-900/60 backdrop-blur-md 
         border border-slate-700/50 rounded-2xl p-6 
-        hover:border-purple-500/50 transition-all duration-500
-        hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]
+        hover:border-blue-400/50 transition-all duration-500
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
       `}
       style={{ transitionDelay: `${delay}ms` }}
@@ -224,7 +227,7 @@ const ExperienceCard = ({
         <Icon className="w-6 h-6 text-white" />
       </div>
       <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
-      <p className="text-purple-400 text-sm font-medium mb-1">{company}</p>
+      <p className="text-blue-400 text-sm font-medium mb-1">{company}</p>
       <p className="text-slate-500 text-xs mb-3 font-mono">{period}</p>
       <p className="text-slate-400 text-sm leading-relaxed">{description}</p>
     </div>
@@ -286,7 +289,7 @@ const ProjectCard = ({
       style={{ transitionDelay: `${delay}ms` }}
     >
       <div className={`${align === "right" ? "lg:order-2" : ""}`}>
-        <div className="text-purple-500 text-sm font-medium mb-2 uppercase tracking-wider">
+        <div className="text-blue-400 text-sm font-medium mb-2 uppercase tracking-wider">
           {subtitle || "Featured Project"}
         </div>
         <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{title}</h3>
@@ -296,7 +299,7 @@ const ProjectCard = ({
             <span 
               key={tag} 
               className="px-3 py-1 bg-slate-800/80 text-slate-300 text-xs rounded-full 
-                border border-slate-700 hover:border-purple-500/50 hover:text-white 
+                border border-slate-700 hover:border-blue-400/50 hover:text-white 
                 hover:-translate-y-0.5 transition-all duration-300"
             >
               {tag}
@@ -311,7 +314,7 @@ const ProjectCard = ({
             </a>
           )}
           {live && (
-            <a href={live} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-purple-400 transition-colors flex items-center gap-2 group">
+            <a href={live} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-2 group">
               <ExternalLink className="w-5 h-5" />
               <span className="text-sm group-hover:underline">Live Demo</span>
             </a>
@@ -325,7 +328,7 @@ const ProjectCard = ({
           onMouseLeave={resetTilt}
           className="relative group rounded-2xl overflow-hidden border border-slate-700/50 
             transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform
-            hover:border-purple-500/40 hover:shadow-[0_20px_80px_-20px_rgba(139,92,246,0.45)]"
+            hover:border-blue-400/40 hover:shadow-[0_20px_80px_-20px_rgba(59,130,246,0.45)]"
           style={{
             transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.rx || tilt.ry ? 1.02 : 1})`,
             transformStyle: "preserve-3d",
@@ -345,7 +348,7 @@ const ProjectCard = ({
           <div
             className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             style={{
-              background: `radial-gradient(400px circle at ${tilt.gx}% ${tilt.gy}%, rgba(139,92,246,0.25), transparent 60%)`,
+              background: `radial-gradient(400px circle at ${tilt.gx}% ${tilt.gy}%, rgba(59,130,246,0.25), transparent 60%)`,
             }}
           />
 
@@ -404,7 +407,7 @@ const StatCard = ({ number, label, suffix = "" }: { number: number; label: strin
       ref={ref}
       className={`
         text-center p-6 bg-slate-900/40 rounded-2xl border border-slate-800
-        hover:border-purple-500/30 transition-all duration-500
+        hover:border-blue-400/30 transition-all duration-500
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
       `}
     >
@@ -417,44 +420,19 @@ const StatCard = ({ number, label, suffix = "" }: { number: number; label: strin
 };
 
 const Index = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  // Mouse parallax effect
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const { ref: heroRef, isVisible: heroVisible } = useScrollReveal();
 
   return (
-    <div className="min-h-screen bg-[#0a0a1a] text-white overflow-x-hidden">
-      {/* Animated background orbs with parallax */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[150px]"
-          style={{ transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)` }}
-        />
-        <div 
-          className="absolute top-[40%] right-[-5%] w-[500px] h-[500px] bg-pink-600/15 rounded-full blur-[120px]"
-          style={{ transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px)` }}
-        />
-        <div 
-          className="absolute bottom-[-10%] left-[30%] w-[400px] h-[400px] bg-indigo-600/15 rounded-full blur-[100px]"
-          style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }}
-        />
-      </div>
+    <div className="min-h-screen text-white overflow-x-hidden bg-[#020306]">
+      {/* Premium canvas-based space background: layered parallax stars, nebula glow, comets */}
+      <SpaceBackground />
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-blue-500/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a href="#" className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <a href="#" className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             H.
           </a>
           <div className="hidden md:flex gap-8 text-sm font-medium">
@@ -465,7 +443,37 @@ const Index = () => {
                 className="text-slate-400 hover:text-white transition-colors relative group"
               >
                 {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300" />
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile menu toggle */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((v) => !v)}
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile menu panel */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-out border-t border-blue-500/10
+            ${mobileMenuOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}`}
+        >
+          <div className="flex flex-col px-6 py-4 gap-1 bg-slate-950/95">
+            {['Home', 'About', 'Experience', 'Projects', 'Contact'].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-3 text-slate-300 hover:text-white text-base font-medium border-b border-white/5 last:border-b-0 transition-colors"
+              >
+                {item}
               </a>
             ))}
           </div>
@@ -473,7 +481,7 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative z-10 min-h-screen flex items-center px-6 pt-20">
+      <section id="home" className="relative z-10 min-h-screen flex items-center px-6 pt-24 md:pt-20">
         <div className="max-w-7xl mx-auto w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left - Profile Card */}
@@ -489,12 +497,12 @@ const Index = () => {
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
               <div className="relative">
-                <div className="text-purple-500 text-sm font-medium mb-2 uppercase tracking-widest">Hello! I Am</div>
+                <div className="text-blue-400 text-sm font-medium mb-2 uppercase tracking-widest">Hello! I Am</div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Harishmaran</h1>
                 <div className="relative w-24 h-24 mb-6">
                   {/* radial glow behind the memoji */}
-                  <div className="absolute inset-0 -m-4 rounded-full bg-purple-500/40 blur-2xl animate-pulse" />
-                  <div className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-2xl animate-avatar-float">
+                  <div className="absolute inset-0 -m-4 rounded-full bg-blue-400/40 blur-2xl animate-pulse" />
+                  <div className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-2xl animate-avatar-float">
                     <span className="text-5xl select-none" role="img" aria-label="Developer coding on a MacBook">👨‍💻</span>
                   </div>
                 </div>
@@ -509,7 +517,7 @@ const Index = () => {
                       href={href}
                       className="w-12 h-12 rounded-xl bg-slate-800/50 border border-slate-700/50 
                         flex items-center justify-center text-slate-400 
-                        hover:text-white hover:bg-purple-500/20 hover:border-purple-500/50 
+hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
                         transition-all duration-300 group"
                       aria-label={label}
                     >
@@ -523,11 +531,11 @@ const Index = () => {
             {/* Right - Hero Text */}
             <div className={`text-center lg:text-left transition-all duration-1000 delay-300 ${heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
               <p className="text-slate-400 text-lg mb-4">A DevOps Engineer who</p>
-              <h2 className="text-5xl md:text-7xl font-bold mb-2">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-2">
                 <span className="text-white">Automates</span>
               </h2>
-              <h2 className="text-5xl md:text-7xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
                   everything...
                 </span>
               </h2>
@@ -552,11 +560,11 @@ const Index = () => {
       {/* About Section */}
       <section id="about" className="relative z-10 py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+          <div className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
             About Me
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            I'm a <span className="text-purple-400"><Typewriter text="DevOps Engineer" delay={500} /></span>
+            I'm a <span className="text-blue-400"><Typewriter text="DevOps Engineer" delay={500} /></span>
           </h2>
           <p className="text-slate-400 text-lg mb-4">
             Currently a Business Analyst at{" "}
@@ -576,7 +584,7 @@ const Index = () => {
       <section id="experience" className="relative z-10 py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
+            <div className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
               Professional Journey
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white">Work Experience</h2>
@@ -598,7 +606,7 @@ const Index = () => {
               period="Jan 2024 - Aug 2024"
               description="Designed CI/CD pipelines with GitHub Actions and automated deployments that cut release time by 40%. Containerised services with Docker and orchestrated them on Kubernetes for repeatable, self-healing rollouts."
               icon={Layers}
-              color="bg-gradient-to-br from-purple-500 to-pink-600"
+              color="bg-gradient-to-br from-blue-500 to-indigo-600"
               delay={100}
             />
             <ExperienceCard

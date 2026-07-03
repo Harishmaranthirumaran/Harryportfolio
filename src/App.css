@@ -33,6 +33,8 @@
   }
 }
 
+.hero { height: 100vh; }
+
 .card {
   padding: 2em;
 }
