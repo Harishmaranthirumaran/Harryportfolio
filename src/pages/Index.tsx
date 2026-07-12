@@ -215,21 +215,21 @@ const ExperienceCard = ({
       ref={ref}
       className={`
         group relative bg-slate-900/60 backdrop-blur-md 
-        border border-slate-700/50 rounded-2xl p-6 
+        border border-slate-700/50 rounded-2xl p-8 
         hover:border-blue-400/50 transition-all duration-500
         hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
       `}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center mb-4 
+      <div className={`w-14 h-14 rounded-xl ${color} flex items-center justify-center mb-5 
         group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
-        <Icon className="w-6 h-6 text-white" />
+        <Icon className="w-7 h-7 text-white" />
       </div>
-      <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
-      <p className="text-blue-400 text-sm font-medium mb-1">{company}</p>
-      <p className="text-slate-500 text-xs mb-3 font-mono">{period}</p>
-      <p className="text-slate-400 text-sm leading-relaxed">{description}</p>
+      <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
+      <p className="text-blue-400 text-base font-medium mb-2">{company}</p>
+      <p className="text-slate-500 text-sm mb-4 font-mono">{period}</p>
+      <p className="text-slate-400 text-base leading-relaxed">{description}</p>
     </div>
   );
 };
@@ -498,7 +498,13 @@ const Index = () => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
               <div className="relative">
                 <div className="text-blue-400 text-sm font-medium mb-2 uppercase tracking-widest">Hello! I Am</div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Harishmaran</h1>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-1">Harry</h1>
+                <p className="text-slate-500 text-sm mb-4">
+                  Harishmaran Subbaiah Thirumaran
+                </p>
+                <p className="text-slate-400 text-xs mb-4 flex items-center gap-2">
+                  <MapPin className="w-3.5 h-3.5" /> Amsterdam, Netherlands
+                </p>
                 <div className="relative w-24 h-24 mb-6">
                   {/* radial glow behind the memoji */}
                   <div className="absolute inset-0 -m-4 rounded-full bg-blue-400/40 blur-2xl animate-pulse" />
@@ -530,17 +536,17 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
             
             {/* Right - Hero Text */}
             <div className={`text-center lg:text-left transition-all duration-1000 delay-300 ${heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-              <p className="text-slate-400 text-lg mb-4">A DevOps Engineer who</p>
+              <p className="text-slate-400 text-lg mb-4">DevOps Engineer in Amsterdam</p>
               <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-2">
                 <span className="text-white">Automates</span>
               </h2>
               <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-                  everything...
+                  the hard stuff
                 </span>
               </h2>
               <p className="text-slate-400 text-lg max-w-lg mx-auto lg:mx-0">
-                Currently building scalable infrastructure and CI/CD pipelines that empower teams to ship faster and more reliably.
+                I build CI/CD pipelines and cloud infrastructure so teams can ship code faster, with fewer fire drills.
               </p>
             </div>
           </div>
@@ -550,10 +556,10 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
       {/* Stats Section */}
       <section className="relative z-10 py-20 px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          <StatCard number={4} suffix="+" label="Years Experience" />
-          <StatCard number={99} suffix=".9%" label="Uptime Maintained" />
-          <StatCard number={40} suffix="%" label="Deploy Time Reduced" />
-          <StatCard number={30} suffix="+" label="IaC Projects Shipped" />
+          <StatCard number={3} suffix="+" label="Years Experience" />
+          <StatCard number={99} suffix="%" label="Uptime Maintained" />
+          <StatCard number={28} suffix="%" label="Incident Response Improvement" />
+          <StatCard number={10} suffix="+" label="IaC Modules Built" />
         </div>
       </section>
 
@@ -564,18 +570,13 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
             About Me
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            I'm a <span className="text-blue-400"><Typewriter text="DevOps Engineer" delay={500} /></span>
+            I build systems that <span className="text-blue-400"><Typewriter text="just work" delay={500} /></span>
           </h2>
           <p className="text-slate-400 text-lg mb-4">
-            Currently a Business Analyst at{" "}
-            <a href="https://www.gov.uk/government/organisations/department-for-work-pensions" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">DWP</a>
-            {" "}— where I bridge delivery teams and cloud engineering — with a hands-on focus on DevOps and cloud infrastructure.
+            DevOps Engineer with hands-on experience at the <a href="https://www.gov.uk/government/organisations/department-for-work-pensions" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">UK Government</a>, where I maintained CI/CD pipelines, built Infrastructure as Code, and set up monitoring that helped teams sleep better at night.
           </p>
           <p className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto">
-            Over 4+ years across service delivery and cloud engineering, I've built Infrastructure as Code with
-            Terraform, containerised workloads on AWS with Docker and Kubernetes, and wired up CI/CD and
-            observability with Prometheus and Grafana. I care about the equilibrium between developer velocity
-            and operational stability.
+            At 24, I blend technical engineering with business context—Mechanical Engineering background, International Business Masters, and production experience running cloud infrastructure. I focus on reducing manual work, improving reliability, and making deployments boring (in a good way).
           </p>
         </div>
       </section>
@@ -590,30 +591,30 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
             <h2 className="text-4xl md:text-5xl font-bold text-white">Work Experience</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
             <ExperienceCard
-              title="Business Analyst — DevOps & Cloud"
-              company="DWP — Department for Work and Pensions"
-              period="Aug 2024 - Present"
-              description="Bridge delivery teams and cloud engineering on government digital services. Translate operational requirements into Infrastructure as Code with Terraform and AWS, and champion CI/CD automation to shorten release cycles."
+              title="DevOps Engineer"
+              company="DWP — UK Government"
+              period="Aug 2024 - Jul 2026"
+              description="Maintained GitHub Actions pipelines, deployed infrastructure with Terraform and Kubernetes on AWS EKS, and set up monitoring with Grafana and Datadog. Results: SLA improved from 78% to 91%, 7+ hours of manual work eliminated each week, incident response 28% faster."
               icon={Cloud}
               color="bg-gradient-to-br from-blue-500 to-indigo-600"
               delay={0}
             />
             <ExperienceCard
-              title="Cloud & DevOps Engineer"
-              company="The Contact Company"
+              title="Cloud Engineer"
+              company="Sainsbury's Bank"
               period="Jan 2024 - Aug 2024"
-              description="Designed CI/CD pipelines with GitHub Actions and automated deployments that cut release time by 40%. Containerised services with Docker and orchestrated them on Kubernetes for repeatable, self-healing rollouts."
+              description="Managed AWS environments (EC2, S3, VPC), Docker containerisation, and security configurations including OAuth2 and mTLS. Improved system reliability by 18% and reduced response time for critical alerts."
               icon={Layers}
               color="bg-gradient-to-br from-blue-500 to-indigo-600"
               delay={100}
             />
             <ExperienceCard
-              title="Systems & Infrastructure Engineer"
+              title="Cloud Operations & Automation Engineer"
               company="Cookooc"
-              period="Jan 2021 - Dec 2023"
-              description="Ran cloud infrastructure for a live digital platform at 99.9% uptime. Scripted server provisioning and monitoring in Python and Bash, and introduced Prometheus and Grafana dashboards for proactive alerting."
+              period="Jan 2021 - Aug 2022"
+              description="Built an automation platform using n8n, REST APIs, and webhooks—connecting Gmail, Calendar, WhatsApp, and payment systems. Cut manual operational effort by 60% with OAuth2 authentication and GitLab CI/CD pipelines."
               icon={Server}
               color="bg-gradient-to-br from-emerald-500 to-teal-600"
               delay={200}
@@ -621,8 +622,8 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
             <ExperienceCard
               title="MSc International Business"
               company="University of Liverpool"
-              period="2023 - 2024"
-              description="Postgraduate study with a focus on data analytics and digital transformation, alongside self-directed AWS and Kubernetes engineering that seeded the cloud projects below."
+              period="Dec 2023"
+              description="Merit grade (2:1). Focused on data analytics and digital transformation. Self-taught AWS and Kubernetes during this time. Earned HEAR Accreditation in Leadership and Professional Communication."
               icon={GraduationCap}
               color="bg-gradient-to-br from-amber-500 to-orange-600"
               delay={300}
@@ -639,32 +640,54 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Skills & Technologies</h2>
           <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
-            My DevOps toolchain orbits a single goal — shipping reliable, observable infrastructure.
-            The core platforms sit at the centre, with automation and monitoring tooling circling around.
+            My toolchain orbits one goal: shipping reliable, observable infrastructure. Core platforms at the centre, automation and monitoring tooling circling around.
           </p>
 
           <div className="flex justify-center items-center min-h-[320px] sm:min-h-[420px] md:min-h-[520px] py-4">
             <SolarSystem />
           </div>
 
-          {/* Grouped skill matrix for scanability */}
+          {/* Grouped skill matrix with badges */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 text-left">
             {[
-              { group: "Cloud & Platforms", items: ["AWS", "EKS / ECS", "Fargate", "App Runner"] },
-              { group: "Containers & Orchestration", items: ["Docker", "Kubernetes", "Helm", "Istio"] },
-              { group: "IaC & Automation", items: ["Terraform", "Ansible", "GitHub Actions", "Jenkins"] },
-              { group: "Observability & OS", items: ["Prometheus", "Grafana", "OpenTelemetry", "Linux"] },
+              { 
+                group: "Cloud & Platforms", 
+                items: ["AWS (EC2, EKS, VPC, IAM)", "Datadog", "CloudWatch"],
+                icon: Cloud,
+                color: "from-orange-500 to-yellow-500"
+              },
+              { 
+                group: "Containers & Orchestration", 
+                items: ["Docker", "Kubernetes (EKS)", "ArgoCD", "GitOps"],
+                icon: Container,
+                color: "from-blue-500 to-cyan-500"
+              },
+              { 
+                group: "IaC & Automation", 
+                items: ["Terraform", "GitHub Actions", "GitLab CI/CD", "Python", "Bash"],
+                icon: Workflow,
+                color: "from-purple-500 to-pink-500"
+              },
+              { 
+                group: "Observability & OS", 
+                items: ["Prometheus", "Grafana", "Linux", "SQL", "n8n"],
+                icon: Server,
+                color: "from-emerald-500 to-teal-500"
+              },
             ].map((cat) => (
               <div
                 key={cat.group}
-                className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 hover:border-purple-500/30 transition-colors"
+                className="group bg-slate-900/50 border border-slate-800 rounded-2xl p-5 hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)] hover:-translate-y-1"
               >
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                  <cat.icon className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-sm font-semibold text-purple-400 mb-3">{cat.group}</h4>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {cat.items.map((s) => (
-                    <li key={s} className="text-slate-400 text-sm flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-purple-500/60" />
-                      {s}
+                    <li key={s} className="text-slate-400 text-sm flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-purple-500/60 flex-shrink-0" />
+                      <span className="group-hover:text-slate-300 transition-colors">{s}</span>
                     </li>
                   ))}
                 </ul>
@@ -681,30 +704,30 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
             <div className="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm mb-6">
               Featured Work
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white">Featured Projects</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Projects</h2>
           </div>
           
           <div className="space-y-32">
-            {/* Project 1 — Retail Store container platform */}
+            {/* Project 1 — Dona AI Automation System */}
             <ProjectCard
-              title="Cloud-Native Retail Store Platform"
-              subtitle="Containers on AWS · ECS & EKS"
-              description="A microservices retail store (UI, catalog, cart, orders, checkout in Java, Go and Node) deployed on AWS with Terraform. I provisioned the VPC, ran the services on ECS Fargate and Amazon EKS, and backed them with RDS, DynamoDB and Redis. Every service is wired for Prometheus metrics and OpenTelemetry tracing, with Istio handling service mesh traffic on Kubernetes."
-              image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80"
-              tags={["Terraform", "Amazon EKS", "ECS Fargate", "Istio", "Prometheus", "OpenTelemetry", "RDS", "DynamoDB"]}
-              github="https://github.com/Harishmaranthirumaran/retail-store-sample-app"
+              title="Dona — AI Automation System"
+              subtitle="Live Production System"
+              description="A live AI orchestration system that I use daily. Event-driven workflows automate tasks across Gmail, Google Calendar, WhatsApp, and Google Sheets. Built with n8n, FastAPI, PostgreSQL, and AWS (EC2, API Gateway). Runs with under 2% workflow failure rate using Claude and OpenAI APIs."
+              image="/project-dona.jpg"
+              tags={["n8n", "AWS EC2", "FastAPI", "PostgreSQL", "Claude API", "OpenAI", "Docker"]}
+              github="https://github.com/Harishmaranthirumaran"
               align="left"
               delay={0}
             />
 
-            {/* Project 2 — AWS Project Pack / IaC blueprint library */}
+            {/* Project 2 — Cloud-Native Retail Store Platform */}
             <ProjectCard
-              title="AWS Infrastructure Blueprint Library"
-              subtitle="Terraform IaC · 30+ Reusable Projects"
-              description="A curated pack of production-shaped Terraform blueprints covering the full cloud lifecycle: static hosting and serverless pipelines, multi-account landing zones, EKS GitOps platforms, observability stacks, security guardrails with SCPs and GuardDuty, disaster-recovery drills and FinOps cost intelligence. Each blueprint ships with runbooks, architecture notes and remote-state conventions so it can be deployed independently."
-              image="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=1200&q=80"
-              tags={["Terraform", "AWS Organizations", "GitOps", "Argo CD", "GuardDuty", "AWS Backup", "FinOps", "Ansible"]}
-              github="https://github.com/Harishmaranthirumaran/Cloud-project1"
+              title="Cloud-Native Retail Store Platform"
+              subtitle="Containers on AWS · ECS & EKS"
+              description="A microservices retail store (UI, catalog, cart, orders, checkout in Java, Go and Node) deployed on AWS with Terraform. I provisioned the VPC, ran the services on ECS Fargate and Amazon EKS, and backed them with RDS, DynamoDB and Redis. Every service is wired for Prometheus metrics and OpenTelemetry tracing, with Istio handling service mesh traffic on Kubernetes."
+              image="/project-retail.jpg"
+              tags={["Terraform", "Amazon EKS", "ECS Fargate", "Istio", "Prometheus", "OpenTelemetry", "RDS", "DynamoDB"]}
+              github="https://github.com/Harishmaranthirumaran/retail-store-sample-app"
               align="right"
               delay={100}
             />
@@ -714,13 +737,132 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
               title="Live Formula 1 Telemetry Dashboard"
               subtitle="Real-Time Data Pipeline · React & InfluxDB"
               description="A self-built live F1 dashboard that streams native telemetry from the F1 SignalR broadcast feed, re-sorting every competitive metric across the grid every 5 seconds. A Dockerised fastf1 ingestion service writes into InfluxDB, which a Vite-proxied React front end queries with Flux, plus a browser-native race replay powered by OpenF1 session data. Deployed live on Vercel."
-              image="/f1-pitwall.jpg"
+              image="/project-f1-telemetry.jpg"
               tags={["React", "TypeScript", "InfluxDB", "Docker", "Python (fastf1)", "OpenF1", "Vercel"]}
               github="https://github.com/HARISHMARAN/Harry-s-F1-data"
               live="https://harry-s-f1-data.vercel.app"
               align="left"
               delay={200}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
+              Professional Development
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Certifications</h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              Always learning. Here's what I've completed so far.
+            </p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { 
+                name: "AWS Cloud Practitioner", 
+                provider: "AWS", 
+                icon: Cloud,
+                logo: "/certifications/aws-logo.svg",
+                color: "from-orange-500 to-yellow-500",
+                darkLogo: true
+              },
+              { 
+                name: "Power BI Data Analyst", 
+                provider: "Microsoft (PL-300)", 
+                icon: Database,
+                logo: "/certifications/powerbi-logo.webp",
+                color: "from-blue-500 to-cyan-500",
+                darkLogo: false
+              },
+              { 
+                name: "Project Management", 
+                provider: "Google / Coursera", 
+                icon: Workflow,
+                logo: "/certifications/google-cert.png",
+                color: "from-red-500 to-yellow-500",
+                darkLogo: false
+              },
+              { 
+                name: "GitHub Actions CI/CD", 
+                provider: "GitHub Learning Lab", 
+                icon: GitBranch,
+                logo: "/certifications/githubactions.svg",
+                color: "from-neutral-700 to-neutral-600",
+                border: "border-neutral-500/30",
+                darkLogo: true
+              },
+              { 
+                name: "Docker for Developers", 
+                provider: "Udemy", 
+                icon: Container,
+                logo: "/certifications/docker-logo.png",
+                color: "from-blue-500 to-blue-300",
+                darkLogo: true
+              },
+              { 
+                name: "Kubernetes & Containers", 
+                provider: "CNCF / Linux Foundation", 
+                icon: Boxes,
+                logo: "/certifications/kubernetes-docker.webp",
+                color: "from-blue-600 to-cyan-500",
+                darkLogo: false
+              },
+              { 
+                name: "Six Sigma Principles", 
+                provider: "University of Georgia", 
+                icon: Award,
+                logo: "/certifications/sixsigma.webp",
+                color: "from-red-600 to-red-900",
+                darkLogo: false
+              },
+              { 
+                name: "HEAR Accreditation", 
+                provider: "University of Liverpool", 
+                icon: GraduationCap,
+                logo: "/certifications/liverpool.webp",
+                color: "from-purple-600 to-blue-600",
+                darkLogo: false
+              },
+            ].map((cert) => (
+              <div
+                key={cert.name}
+                className="group relative bg-slate-900/50 border border-slate-800 rounded-xl p-6 
+                  hover:border-blue-500/30 transition-all duration-500 
+                  hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:-translate-y-2"
+              >
+                {/* Logo Container */}
+                <div className={`w-14 h-14 mb-4 rounded-xl bg-gradient-to-br ${cert.color} 
+                  flex items-center justify-center p-2 shadow-lg
+                  group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                  {cert.logo ? (
+                    <img 
+                      src={cert.logo} 
+                      alt={cert.name}
+                      className={`w-8 h-8 object-contain ${cert.darkLogo ? 'filter brightness-0 invert' : ''}`}
+                      onError={(e) => {
+                        // Fallback to icon if image fails
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement?.querySelector('svg')?.classList.remove('hidden');
+                      }}
+                    />
+                  ) : (
+                    <cert.icon className="w-7 h-7 text-white" />
+                  )}
+                </div>
+                <h4 className="text-base font-semibold text-white mb-2">{cert.name}</h4>
+                <p className="text-sm text-slate-500">{cert.provider}</p>
+                
+                {/* Hover shine effect */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-transparent via-white/5 to-transparent 
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -733,18 +875,22 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Contact</h2>
           <p className="text-slate-400 mb-8 max-w-xl mx-auto">
-            I'm currently looking to join a cross-functional team that values improving developer experience 
-            through reliable infrastructure, or have a project in mind? Let's connect.
+            Based in Amsterdam, available immediately. Looking to join a team that cares about infrastructure reliability and developer experience.
           </p>
-          <a 
-            href="mailto:harishmaran2001@gmail.com"
-            className="inline-flex items-center gap-2 text-xl md:text-2xl font-medium text-purple-400 hover:text-purple-300 transition-colors group"
-          >
-            harishmaran2001@gmail.com
-            <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <a 
+              href="mailto:harishmaran2001@gmail.com"
+              className="inline-flex items-center gap-2 text-xl md:text-2xl font-medium text-purple-400 hover:text-purple-300 transition-colors group"
+            >
+              harishmaran2001@gmail.com
+              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+          <p className="text-slate-500 text-sm mb-8">
+            +31 6384147387 · Amsterdam, Netherlands
+          </p>
           
-          <div className="flex justify-center gap-6 mt-12">
+          <div className="flex justify-center gap-6 mt-8">
             {[
               { icon: Linkedin, href: "https://linkedin.com/in/harishmaran", label: "LinkedIn" },
               { icon: Github, href: "https://github.com/Harishmaranthirumaran", label: "GitHub" },
