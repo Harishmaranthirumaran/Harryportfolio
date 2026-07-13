@@ -557,9 +557,9 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
       <section className="relative z-10 py-20 px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           <StatCard number={3} suffix="+" label="Years Experience" />
-          <StatCard number={99} suffix="%" label="Uptime Maintained" />
-          <StatCard number={28} suffix="%" label="Incident Response Improvement" />
-          <StatCard number={10} suffix="+" label="IaC Modules Built" />
+          <StatCard number={77} suffix="%" label="MTTR Reduction (47→11 min)" />
+          <StatCard number={38} suffix="%" label="P1 Incidents Reduced" />
+          <StatCard number={10} suffix="+" label="Terraform Modules Authored" />
         </div>
       </section>
 
@@ -593,28 +593,28 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
           
           <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
             <ExperienceCard
-              title="DevOps Engineer"
-              company="DWP — UK Government"
-              period="Aug 2024 - Jul 2026"
-              description="Maintained GitHub Actions pipelines, deployed infrastructure with Terraform and Kubernetes on AWS EKS, and set up monitoring with Grafana and Datadog. Results: SLA improved from 78% to 91%, 7+ hours of manual work eliminated each week, incident response 28% faster."
+              title="DevOps Engineer / Cloud Platform Analyst"
+              company="DWP — UK Government · Cardiff, UK"
+              period="Aug 2024 – Jun 2026"
+              description="Owned 3 production EKS clusters (12 nodes, 40+ microservices) delivering 99.97% uptime over 18 months. Cut deployment time from 45 to 9 min via GitHub Actions pipelines. Migrated all AWS infra to Terraform — change lead time dropped from 2 days to 25 minutes. Reduced MTTR from 47 to 11 min; P1 incidents down 38%. Saved 11 hrs/week through automation. Security audit findings cut 67% via OPA Gatekeeper + IRSA."
               icon={Cloud}
               color="bg-gradient-to-br from-blue-500 to-indigo-600"
               delay={0}
             />
             <ExperienceCard
-              title="Cloud Engineer"
-              company="Sainsbury's Bank"
-              period="Jan 2024 - Aug 2024"
-              description="Managed AWS environments (EC2, S3, VPC), Docker containerisation, and security configurations including OAuth2 and mTLS. Improved system reliability by 18% and reduced response time for critical alerts."
+              title="Cloud & Systems Engineer"
+              company="Sainsbury's Bank · Birkenhead, UK"
+              period="Jan 2024 – Aug 2024"
+              description="Managed AWS EC2/S3/VPC infrastructure for a banking platform handling 300,000+ customer transactions/month in an FCA-regulated environment — zero compliance violations in 7 months. Containerised 8 legacy apps with Docker; reliability improved 23%. Configured CloudWatch dashboards and SNS alerts — MTTR cut from 34 to 9 min, weekend P2 incidents down 41%."
               icon={Layers}
               color="bg-gradient-to-br from-blue-500 to-indigo-600"
               delay={100}
             />
             <ExperienceCard
-              title="Cloud Operations & Automation Engineer"
-              company="Cookooc"
-              period="Jan 2021 - Aug 2022"
-              description="Built an automation platform using n8n, REST APIs, and webhooks—connecting Gmail, Calendar, WhatsApp, and payment systems. Cut manual operational effort by 60% with OAuth2 authentication and GitLab CI/CD pipelines."
+              title="Cloud Operations & Automation Lead"
+              company="Cookooc · Chennai, India"
+              period="Jan 2020 – Aug 2022"
+              description="Built GitLab CI/CD pipelines for 5 microservices — deployment time from 90-min manual to 8-min automated; release cadence from monthly to weekly. Automated 12 operational workflows with n8n + REST APIs, saving 18 engineer-hours/week. Alert detection cut from 28 to 4 min; infra costs reduced 19% via EC2 rightsizing. Production bugs dropped 44% after mandatory code review gates."
               icon={Server}
               color="bg-gradient-to-br from-emerald-500 to-teal-600"
               delay={200}
@@ -622,8 +622,8 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
             <ExperienceCard
               title="MSc International Business"
               company="University of Liverpool"
-              period="Dec 2023"
-              description="Merit grade (2:1). Focused on data analytics and digital transformation. Self-taught AWS and Kubernetes during this time. Earned HEAR Accreditation in Leadership and Professional Communication."
+              period="Dec 2023 · Grade: 2:1 Merit"
+              description="HEAR Accreditation in Leadership, Analytical Rigour & Professional Communication. Focused on data analytics and digital transformation. Self-taught AWS and Kubernetes during this period."
               icon={GraduationCap}
               color="bg-gradient-to-br from-amber-500 to-orange-600"
               delay={300}
@@ -708,39 +708,39 @@ hover:text-white hover:bg-blue-500/20 hover:border-blue-500/50
           </div>
           
           <div className="space-y-32">
-            {/* Project 1 — Dona AI Automation System */}
+            {/* Project 1 — F1 Telemetry Platform */}
             <ProjectCard
-              title="Dona — AI Automation System"
-              subtitle="Live Production System"
-              description="A live AI orchestration system that I use daily. Event-driven workflows automate tasks across Gmail, Google Calendar, WhatsApp, and Google Sheets. Built with n8n, FastAPI, PostgreSQL, and AWS (EC2, API Gateway). Runs with under 2% workflow failure rate using Claude and OpenAI APIs."
-              image="/project-dona.jpg"
-              tags={["n8n", "AWS EC2", "FastAPI", "PostgreSQL", "Claude API", "OpenAI", "Docker"]}
+              title="F1 Live Telemetry Platform – Auto-Scaling & Multi-Region IaC"
+              subtitle="Terraform · AWS ALB · ECS Fargate · CloudFront · GitHub Actions"
+              description="Full AWS infrastructure written in Terraform (VPC, subnets, ALB, ECS Fargate, RDS Aurora, ElastiCache, CloudFront, Route 53) — 100% reproducible via one pipeline command. ECS auto-scales from 2 to 24 tasks during F1 race weekends (+1,100% traffic vs. weekdays). Migrated infrastructure from eu-west-1 to eu-central-1 for 28% lower latency, zero-downtime via Route 53 weighted routing. ElastiCache Redis caching cut API response times 65% and Aurora read load 40%. GitHub Actions CI/CD reduced deploy time from 35 to 8 minutes."
+              image="/project-f1-telemetry.jpg"
+              tags={["Terraform", "AWS ECS Fargate", "ALB", "CloudFront", "ElastiCache Redis", "RDS Aurora", "Route 53", "GitHub Actions"]}
               github="https://github.com/Harishmaranthirumaran"
+              live="https://harry-s-f1-data.vercel.app"
               align="left"
               delay={0}
             />
 
-            {/* Project 2 — Cloud-Native Retail Store Platform */}
+            {/* Project 2 — Dona AI Automation */}
             <ProjectCard
-              title="Cloud-Native Retail Store Platform"
-              subtitle="Containers on AWS · ECS & EKS"
-              description="A microservices retail store (UI, catalog, cart, orders, checkout in Java, Go and Node) deployed on AWS with Terraform. I provisioned the VPC, ran the services on ECS Fargate and Amazon EKS, and backed them with RDS, DynamoDB and Redis. Every service is wired for Prometheus metrics and OpenTelemetry tracing, with Istio handling service mesh traffic on Kubernetes."
-              image="/project-retail.jpg"
-              tags={["Terraform", "Amazon EKS", "ECS Fargate", "Istio", "Prometheus", "OpenTelemetry", "RDS", "DynamoDB"]}
-              github="https://github.com/Harishmaranthirumaran/retail-store-sample-app"
+              title="Dona – Production AI Automation Platform (IaC-Managed)"
+              subtitle="Terraform · AWS EC2/VPC/IAM · Docker · n8n · FastAPI"
+              description="Complete AWS environment built in Terraform: VPC with public/private subnets, NAT gateway, least-privilege security groups, EC2, IAM roles — zero hardcoded credentials. Containerised n8n + FastAPI + PostgreSQL with Docker Compose on EBS persistent volumes. GitHub Actions pipeline: Docker build → ECR push → zero-downtime EC2 rolling restart. CloudWatch alerts to Slack on CPU/memory thresholds — MTTR under 10 minutes. Infrastructure fully recoverable in under 12 minutes; validated by intentional EC2 termination + EBS snapshot restore."
+              image="/project-dona.jpg"
+              tags={["Terraform", "AWS EC2", "Docker", "n8n", "FastAPI", "PostgreSQL", "CloudWatch", "GitHub Actions", "Claude API"]}
+              github="https://github.com/Harishmaranthirumaran"
               align="right"
               delay={100}
             />
 
-            {/* Project 3 — Live F1 telemetry dashboard */}
+            {/* Project 3 — Enterprise K8s Platform */}
             <ProjectCard
-              title="Live Formula 1 Telemetry Dashboard"
-              subtitle="Real-Time Data Pipeline · React & InfluxDB"
-              description="A self-built live F1 dashboard that streams native telemetry from the F1 SignalR broadcast feed, re-sorting every competitive metric across the grid every 5 seconds. A Dockerised fastf1 ingestion service writes into InfluxDB, which a Vite-proxied React front end queries with Flux, plus a browser-native race replay powered by OpenF1 session data. Deployed live on Vercel."
-              image="/project-f1-telemetry.jpg"
-              tags={["React", "TypeScript", "InfluxDB", "Docker", "Python (fastf1)", "OpenF1", "Vercel"]}
-              github="https://github.com/HARISHMARAN/Harry-s-F1-data"
-              live="https://harry-s-f1-data.vercel.app"
+              title="Enterprise Cloud-Native Platform – EKS, GitOps & Zero-Trust Security"
+              subtitle="Terraform · AWS EKS · ArgoCD · Argo Rollouts · Istio · OPA Gatekeeper"
+              description="Multi-AZ AWS EKS cluster provisioned with 10+ custom Terraform modules (on-demand + spot node groups, IRSA, KMS encryption for etcd). GitOps delivery via ArgoCD ApplicationSets with Argo Rollouts Canary deployments — auto-rollback triggers at error rate >1%. Zero-trust: Istio mTLS strict mode + 10 OPA Gatekeeper policies (distroless images, no privileged containers). Prometheus scraping 40+ targets, Loki log aggregation, 4 Grafana production dashboards. Velero 1-hour RTO/RPO validated via Chaos Mesh fault injection (pod kills, 500ms network latency, CPU saturation)."
+              image="/eks-infrastructure.jpg"
+              tags={["Terraform", "AWS EKS", "ArgoCD", "Argo Rollouts", "Istio", "Prometheus", "Loki", "OPA Gatekeeper", "Velero", "Chaos Mesh"]}
+              github="https://github.com/Harishmaranthirumaran"
               align="left"
               delay={200}
             />
